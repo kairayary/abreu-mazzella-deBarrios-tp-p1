@@ -1,5 +1,8 @@
 package juego;
 
+import entorno.Entorno;
+import java.awt.color.*;
+
 public class Enemigo {
 	// Variables de instancia
     int x;
@@ -22,5 +25,10 @@ public class Enemigo {
         } else {
             this.x += this.velocidad;
         }
+    }
+    
+  //Método para dibujar al enemigo en la pantalla
+    public void dibujar(Entorno entorno){
+    	entorno.dibujarRectangulo(this.x, this.y, 30, 30,0, java.awt.Color.RED);
     }
 }

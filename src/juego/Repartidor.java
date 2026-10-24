@@ -1,5 +1,8 @@
 package juego;
 
+import entorno.Entorno;
+import java.awt.color.*;
+
 public class Repartidor {
 	// Variables de instancia
     int x;
@@ -12,11 +15,18 @@ public class Repartidor {
         this.y = yInicio;
         this.vidas = 3; // Comienza con 3 vidas según los requerimientos
     }
+    
+  //Método para dibujar al repartidor en la pantalla
+    public void dibujar(Entorno entorno){
+    	entorno.dibujarRectangulo(this.x, this.y, 30, 30,0, java.awt.Color.GREEN);
+    }
+    
  // Método de instancia para mover al repartidor según la tecla presionada
     public void moverArriba() { this.y -= 2; }
     public void moverAbajo() { this.y += 2; }
     public void moverIzquierda() { this.x -= 2; }
     public void moverDerecha() { this.x += 2; }
+    
     
     // Método de instancia para ver su estado
     public void imprimir() {
