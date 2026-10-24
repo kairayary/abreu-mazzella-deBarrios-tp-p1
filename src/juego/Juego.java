@@ -19,7 +19,7 @@ public class Juego extends InterfaceJuego
 		this.entorno = new Entorno(this, "Delivery Rush - UNGS", 800, 600);
 		
 		// Inicializar lo que haga falta para el juego
-		this.repartidor = new Repartidor(400, 500); // Ubicado en la parte inferior
+		this.repartidor = new Repartidor(200, 300, this.entorno); // Ubicado en la parte inferior
 		
 		this.enemigos = new Enemigo[4]; // Tamaño fijo de al menos 4 enemigos
 		this.enemigos[0] = new Enemigo(100, 100, "HORIZONTAL");
@@ -39,32 +39,30 @@ public class Juego extends InterfaceJuego
 	 */
 	public void tick()
 	{
-		// Procesamiento de un instante de tiempo
-		// Movimiento de los enemigos, recorremos el arreglo de enemigos para moverlos en cada fotograma
+		//  Movimiento y dibujo de los enemigos
 		for (int i = 0; i < this.enemigos.length; i++) {
 			if (this.enemigos[i] != null) { // Verificamos que no sea null
 				this.enemigos[i].mover();
 				this.enemigos[i].dibujar(this.entorno);
 			}
-	
-	        //  Movimiento del Repartidor con W, A, S, D
-	        if (this.entorno.estaPresionada('w') || this.entorno.estaPresionada('W')) {
-	            this.repartidor.moverArriba();
-	        }
-	        if (this.entorno.estaPresionada('s') || this.entorno.estaPresionada('S')) {
-	            this.repartidor.moverAbajo();
-	        }
-	        if (this.entorno.estaPresionada('a') || this.entorno.estaPresionada('A')) {
-	            this.repartidor.moverIzquierda();
-	        }
-	        if (this.entorno.estaPresionada('d') || this.entorno.estaPresionada('D')) {
-	            this.repartidor.moverDerecha();
-	        }
-	        
-	        this.repartidor.dibujar(this.entorno);
-	        
+		} 
+
+		// Movimiento del Repartidor con W, A, S, D (fuera del bucle anterior)
+		if (this.entorno.estaPresionada('w') || this.entorno.estaPresionada('W')) {
+			this.repartidor.moverArriba();
+		}
+		if (this.entorno.estaPresionada('s') || this.entorno.estaPresionada('S')) {
+			this.repartidor.moverAbajo();
+		}
+		if (this.entorno.estaPresionada('a') || this.entorno.estaPresionada('A')) {
+			this.repartidor.moverIzquierda();
+		}
+		if (this.entorno.estaPresionada('d') || this.entorno.estaPresionada('D')) {
+			this.repartidor.moverDerecha();
 		}
 		
+		// Dibujamos al repartidor una sola vez por fotograma
+		this.repartidor.dibujar(this.entorno);
 	}
 	
 

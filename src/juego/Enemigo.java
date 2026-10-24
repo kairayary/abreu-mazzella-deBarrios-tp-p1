@@ -1,16 +1,16 @@
 package juego;
 
 import entorno.Entorno;
-import java.awt.color.*;
+import java.awt.Color;
 
 public class Enemigo {
-	// Variables de instancia
+    // Variables de instancia
     int x;
     int y;
     String direccion; // Puede ser "HORIZONTAL" o "VERTICAL"
     int velocidad;
 
-    // Constructor  para inicializar al enemigo
+    // Constructor para inicializar al enemigo
     public Enemigo(int xInicio, int yInicio, String direccionMovimiento) {
         this.x = xInicio;
         this.y = yInicio;
@@ -27,8 +27,8 @@ public class Enemigo {
         }
     }
     
-  //Método para dibujar al enemigo en la pantalla
+    // Método para dibujar al enemigo en la pantalla
     public void dibujar(Entorno entorno){
-    	entorno.dibujarRectangulo(this.x, this.y, 30, 30,0, java.awt.Color.RED);
+        entorno.dibujarRectangulo(this.x, this.y, 30, 30, 0, Color.RED);
     }
 }

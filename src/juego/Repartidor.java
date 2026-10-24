@@ -1,24 +1,28 @@
 package juego;
 
 import entorno.Entorno;
-import java.awt.color.*;
+import java.awt.Color;
+import java.awt.Image;
+import entorno.Herramientas;
 
 public class Repartidor {
 	// Variables de instancia
     int x;
     int y;
     int vidas;
+    Image imagen;
 
     // Constructor 
-    public Repartidor(int xInicio, int yInicio) {
+    public Repartidor(int xInicio, int yInicio, Entorno entorno) {
         this.x = xInicio;
         this.y = yInicio;
-        this.vidas = 3; // Comienza con 3 vidas según los requerimientos
+        this.vidas = 3; 
+        this.imagen = Herramientas.cargarImagen("img/repartidor_adelante.jpg");
     }
     
-  //Método para dibujar al repartidor en la pantalla
+ // Método para dibujar la imagen del repartidor en la pantalla
     public void dibujar(Entorno entorno){
-    	entorno.dibujarRectangulo(this.x, this.y, 30, 30,0, java.awt.Color.GREEN);
+        entorno.dibujarImagen(this.imagen, this.x, this.y, 0);
     }
     
  // Método de instancia para mover al repartidor según la tecla presionada
