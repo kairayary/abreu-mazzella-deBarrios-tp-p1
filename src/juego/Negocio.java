@@ -1,23 +1,26 @@
 package juego;
 
 import entorno.Entorno;
-import java.awt.Color;
+import entorno.Herramientas;
+import java.awt.Image;
 
 public class Negocio {
     int x;
     int y;
     int ancho;
     int alto;
+    Image imagenNegocio;
 
+    //Constructor
     public Negocio(int x, int y) {
         this.x = x;
         this.y = y;
-        this.ancho = 45;
-        this.alto = 35;
+        this.ancho = 10;
+        this.alto = 10;
+        this.imagenNegocio = Herramientas.cargarImagen("juego/negocio.png");
     }
 
     public void dibujar(Entorno entorno) {
-        // Rectángulo distintivo para el negocio
-        entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.ORANGE);
+        entorno.dibujarImagen(this.imagenNegocio, this.x, this.y, 0, 0.04);
     }
 }

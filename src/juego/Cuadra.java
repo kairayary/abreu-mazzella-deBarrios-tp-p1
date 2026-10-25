@@ -12,7 +12,7 @@ public class Cuadra {
         // Distribuimos las 3 casas dentro del espacio de la cuadra
         this.casas[0] = new Casa(xBase - 30, yBase - 20);
         this.casas[1] = new Casa(xBase + 30, yBase - 20);
-        this.casas[2] = new Casa(xBase, yBase + 20);
+        this.casas[2] = new Casa(xBase - 20, yBase + 20);
         
         // El negocio de esta cuadra
         this.negocio = new Negocio(xBase, yBase);
