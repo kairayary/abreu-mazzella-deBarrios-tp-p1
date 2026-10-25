@@ -17,6 +17,21 @@ public class Cuadra {
         // El negocio de esta cuadra
         this.negocio = new Negocio(xBase, yBase);
     }
+    public boolean hayColision(int xRepartidor, int yRepartidor, int anchoRepartidor, int altoRepartidor) {
+        // Verificar colisión con el negocio de la cuadra
+        if (this.negocio.colisionaCon(xRepartidor, yRepartidor, anchoRepartidor, altoRepartidor)) {
+            return true;
+        }
+        
+        // Verificar colisión con cada una de las casas de la cuadra
+        for (int i = 0; i < this.casas.length; i++) {
+            if (this.casas[i].colisionaCon(xRepartidor, yRepartidor, anchoRepartidor, altoRepartidor)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     public void dibujar(Entorno entorno) {
         // Dibujamos el negocio
