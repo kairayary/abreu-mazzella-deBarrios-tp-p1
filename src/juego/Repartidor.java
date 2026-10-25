@@ -2,6 +2,7 @@ package juego;
 
 import entorno.Entorno;
 import entorno.Herramientas;
+import java.awt.Color;
 import java.awt.Image;
 
 public class Repartidor {
