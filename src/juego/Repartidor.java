@@ -2,20 +2,22 @@ package juego;
 
 import entorno.Entorno;
 import entorno.Herramientas;
-import java.awt.Color;
 import java.awt.Image;
 
 public class Repartidor {
-	//Variables
+    // Atributos con visibilidad por defecto (como pide la cátedra)
     int x;
     int y;
+    int ancho;
+    int alto;
     int vidas;
     Image imagen;
 
-    //Constructor
     public Repartidor(int xInicio, int yInicio) {
         this.x = xInicio;
         this.y = yInicio;
+        this.ancho = 30;
+        this.alto = 40;
         this.vidas = 3; 
         this.imagen = Herramientas.cargarImagen("img/repartidor_adelante.jpg");
     }
@@ -24,30 +26,21 @@ public class Repartidor {
         entorno.dibujarImagen(this.imagen, this.x, this.y, 0);
     }
     
-    // Métodos de movimiento con restricciones de pantalla (800x600)
-   
+    // Métodos de movimiento directos
     public void moverArriba() { 
-        if (this.y > 70) {
-            this.y -= 2; 
-        }
+        this.y -= 2; 
     }
     
     public void moverAbajo() { 
-        if (this.y < 550) { 
-            this.y += 2; 
-        }
+        this.y += 2; 
     }
     
     public void moverIzquierda() { 
-        if (this.x > 30) { 
-            this.x -= 2; 
-        }
+        this.x -= 2; 
     }
     
     public void moverDerecha() { 
-        if (this.x < 770) { 
-            this.x += 2; 
-        }
+        this.x += 2; 
     }
     
     public void imprimir() {

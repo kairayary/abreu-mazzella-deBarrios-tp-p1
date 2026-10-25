@@ -62,19 +62,81 @@ public class Juego extends InterfaceJuego
 			}
 		}
 
-		// Movimiento del Repartidor con W, A, S, D (fuera del bucle anterior)
-		if (this.entorno.estaPresionada('w') || this.entorno.estaPresionada('W')) {
-			this.repartidor.moverArriba();
-		}
-		if (this.entorno.estaPresionada('s') || this.entorno.estaPresionada('S')) {
-			this.repartidor.moverAbajo();
-		}
-		if (this.entorno.estaPresionada('a') || this.entorno.estaPresionada('A')) {
-			this.repartidor.moverIzquierda();
-		}
-		if (this.entorno.estaPresionada('d') || this.entorno.estaPresionada('D')) {
-			this.repartidor.moverDerecha();
-		}
+		// Definimos las dimensiones de la caja de colisión del repartidor
+				int anchoRepartidor = 30;
+				int altoRepartidor = 40;
+
+				// --- MOVIMIENTO ARRIBA (W) ---
+				if (this.entorno.estaPresionada('w') || this.entorno.estaPresionada('W')) {
+					int proximoY = this.repartidor.y - 2;
+					boolean colisiona = false;
+					
+					for (int f = 0; f < 4; f++) {
+						for (int c = 0; c < 4; c++) {
+							if (this.cuadras[f][c].hayColision(this.repartidor.x, proximoY, anchoRepartidor, altoRepartidor)) {
+								colisiona = true;
+							}
+						}
+					}
+					
+					if (!colisiona) {
+						this.repartidor.moverArriba();
+					}
+				}
+
+				// --- MOVIMIENTO ABAJO (S) ---
+				if (this.entorno.estaPresionada('s') || this.entorno.estaPresionada('S')) {
+					int proximoY = this.repartidor.y + 2;
+					boolean colisiona = false;
+					
+					for (int f = 0; f < 4; f++) {
+						for (int c = 0; c < 4; c++) {
+							if (this.cuadras[f][c].hayColision(this.repartidor.x, proximoY, anchoRepartidor, altoRepartidor)) {
+								colisiona = true;
+							}
+						}
+					}
+					
+					if (!colisiona) {
+						this.repartidor.moverAbajo();
+					}
+				}
+
+				// --- MOVIMIENTO IZQUIERDA (A) ---
+				if (this.entorno.estaPresionada('a') || this.entorno.estaPresionada('A')) {
+					int proximoX = this.repartidor.x - 2;
+					boolean colisiona = false;
+					
+					for (int f = 0; f < 4; f++) {
+						for (int c = 0; c < 4; c++) {
+							if (this.cuadras[f][c].hayColision(proximoX, this.repartidor.y, anchoRepartidor, altoRepartidor)) {
+								colisiona = true;
+							}
+						}
+					}
+					
+					if (!colisiona) {
+						this.repartidor.moverIzquierda();
+					}
+				}
+
+				// --- MOVIMIENTO DERECHA (D) ---
+				if (this.entorno.estaPresionada('d') || this.entorno.estaPresionada('D')) {
+					int proximoX = this.repartidor.x + 2;
+					boolean colisiona = false;
+					
+					for (int f = 0; f < 4; f++) {
+						for (int c = 0; c < 4; c++) {
+							if (this.cuadras[f][c].hayColision(proximoX, this.repartidor.y, anchoRepartidor, altoRepartidor)) {
+								colisiona = true;
+							}
+						}
+					}
+					
+					if (!colisiona) {
+						this.repartidor.moverDerecha();
+					}
+				}
 		
 	//  Movimiento y dibujo de los enemigos
 			for (int i = 0; i < this.enemigos.length; i++) {
