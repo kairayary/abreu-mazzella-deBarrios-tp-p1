@@ -10,19 +10,19 @@ public class Repartidor {
     int x;
     int y;
     int vidas;
-    Image imagen;
+    Image imagenRepartidor;
 
     // Constructor 
     public Repartidor(int xInicio, int yInicio, Entorno entorno) {
         this.x = xInicio;
         this.y = yInicio;
         this.vidas = 3; 
-        this.imagen = Herramientas.cargarImagen("img/repartidor_adelante.jpg");
+        this.imagenRepartidor = Herramientas.cargarImagen("juego/deliveryBoy.png");
     }
     
  // Método para dibujar la imagen del repartidor en la pantalla
     public void dibujar(Entorno entorno){
-        entorno.dibujarImagen(this.imagen, this.x, this.y, 0);
+        entorno.dibujarImagen(this.imagenRepartidor, this.x, this.y, 0, 0.15);
     }
     
  // Método de instancia para mover al repartidor según la tecla presionada
