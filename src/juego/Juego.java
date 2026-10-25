@@ -6,10 +6,9 @@ import entorno.InterfaceJuego;
 
 public class Juego extends InterfaceJuego
 {
-	// El objeto Entorno que controla el tiempo y otros
+	
 	private Entorno entorno;
-	private Cuadra[][] cuadras; // Grilla de 4x4 cuadras
-	// Variables y métodos propios de cada grupo
+	private Cuadra[][] cuadras;
 	private Repartidor repartidor;
 	private Enemigo[] enemigos; // REQUERIMIENTO: Arreglo de objetos obligatorio
 	
@@ -55,7 +54,7 @@ public class Juego extends InterfaceJuego
 	 */
 	public void tick()
 	{
-		// Dibujar la grilla de la ciudad (Cuadras, Casas y Negocios)
+		// Dibuja la grilla de la ciudad (Cuadras, Casas y Negocios)
 		for (int f = 0; f < 4; f++) {
 			for (int c = 0; c < 4; c++) {
 				this.cuadras[f][c].dibujar(this.entorno);

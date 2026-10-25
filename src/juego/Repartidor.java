@@ -19,11 +19,11 @@ public class Repartidor {
         this.ancho = 30;
         this.alto = 40;
         this.vidas = 3; 
-        this.imagen = Herramientas.cargarImagen("img/repartidor_adelante.jpg");
+        this.imagen = Herramientas.cargarImagen("img/deliveryBoy.png");
     }
     
     public void dibujar(Entorno entorno){
-        entorno.dibujarImagen(this.imagen, this.x, this.y, 0);
+        entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.11);
     }
     
     // Métodos de movimiento directos

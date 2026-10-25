@@ -15,23 +15,20 @@ public class Casa {
         this.ancho = 40;
         this.alto = 30;
     }
-
-    public void dibujar(Entorno entorno) {
-        entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.BLUE);
-    }
     
     public boolean colisionaCon(int xRepartidor, int yRepartidor, int anchoRepartidor, int altoRepartidor) {
-        // Cálculo basado en los centros (coordenadas x, y de la librería Entorno)
-        int left1 = xRepartidor - anchoRepartidor / 2;
-        int right1 = xRepartidor + anchoRepartidor / 2;
-        int top1 = yRepartidor - altoRepartidor / 2;
-        int bottom1 = yRepartidor + altoRepartidor / 2;
+        int diferenciaX = this.x - xRepartidor;
+        int umbralX = (this.ancho + anchoRepartidor) / 2;
+        boolean colisionX = (diferenciaX > -umbralX) && (diferenciaX < umbralX);
 
-        int left2 = this.x - this.ancho / 2;
-        int right2 = this.x + this.ancho / 2;
-        int top2 = this.y - this.alto / 2;
-        int bottom2 = this.y + this.alto / 2;
+        int diferenciaY = this.y - yRepartidor;
+        int umbralY = (this.alto + altoRepartidor) / 2;
+        boolean colisionY = (diferenciaY > -umbralY) && (diferenciaY < umbralY);
 
-        return left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2;
+        return colisionX && colisionY;
+    }
+    public void dibujar(Entorno entorno) {
+        // Por ahora dibujamos un rectángulo representativo (luego se puede cambiar por imagen)
+        entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.BLUE);
     }
 }

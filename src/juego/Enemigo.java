@@ -1,7 +1,10 @@
 package juego;
 
 import entorno.Entorno;
+import entorno.Herramientas;
+
 import java.awt.Color;
+import java.awt.Image;
 
 public class Enemigo {
     // Variables de instancia
@@ -9,6 +12,7 @@ public class Enemigo {
     int y;
     String direccion; // Puede ser "HORIZONTAL" o "VERTICAL"
     int velocidad;
+    Image imagen;
 
     // Constructor para inicializar al enemigo
     public Enemigo(int xInicio, int yInicio, String direccionMovimiento) {
@@ -16,6 +20,7 @@ public class Enemigo {
         this.y = yInicio;
         this.direccion = direccionMovimiento;
         this.velocidad = 2; // Velocidad inicial de desplazamiento
+        this.imagen = Herramientas.cargarImagen("img/enemigo.png");
     }
 
     // Método para mover al enemigo en línea recta
@@ -29,6 +34,6 @@ public class Enemigo {
     
     // Método para dibujar al enemigo en la pantalla
     public void dibujar(Entorno entorno){
-        entorno.dibujarRectangulo(this.x, this.y, 30, 30, 0, Color.RED);
+    	entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.18);
     }
 }
