@@ -47,22 +47,24 @@ public class Repartidor {
     	this.estadoPedido = nuevoEstado;
     }
     
-    // Métodos de movimiento directos
-    public void moverArriba() { 
-        this.y -= 2; 
-    }
+    //Métodos de movimiento directos con limite de pantalla y HUD
     
+    public void moverArriba() { 
+     		this.y -= 2;
+     }
+    	
     public void moverAbajo() { 
-        this.y += 2; 
+  		this.y += 2; 
     }
     
     public void moverIzquierda() { 
-        this.x -= 2; 
+            this.x -= 2;
     }
     
     public void moverDerecha() { 
-        this.x += 2; 
+            this.x += 2; 
     }
+    
     
     public void imprimir() {
         System.out.println("Repartidor en X: " + this.x + " | Y: " + this.y + " | Vidas: " + this.vidas);

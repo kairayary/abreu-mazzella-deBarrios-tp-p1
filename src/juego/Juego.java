@@ -13,8 +13,8 @@ public class Juego extends InterfaceJuego
 	private Entorno entorno;
 	private Cuadra[][] cuadras;
 	private Repartidor repartidor;
-	private Enemigo[] enemigos; // REQUERIMIENTO: Arreglo de objetos obligatorio
-	// --- variables para el HUD:
+	private Enemigo[] enemigos;  //REQUERIMIENTO: Arreglo de objetos obligatorio
+	//Variables para el HUD
 	private int tiempoRestantePedido = 20; //Tiempo limite para entregar cada pedido. Regresiva de 20 a 0.
 	private int contadorTicksPedido = 0;  //Controla los segundos del pedido.
 	private int enemigosEliminados = 0;
@@ -26,20 +26,20 @@ public class Juego extends InterfaceJuego
 	
 	Juego()
 	{
-		// Inicializa el objeto entorno
+		//Inicializa el objeto entorno
 		this.entorno = new Entorno(this, "Delivery Rush - UNGS", 800, 600);
 		
-		// Inicializar lo que haga falta para el juego
+		//Inicializar lo que haga falta para el juego
 		this.repartidor = new Repartidor(200, 300); 
 		
-		// Cargar iconos para el HUD (ajusta los nombres de archivo según los que tengas)
+		//Cargar iconos para el HUD (ajusta los nombres de archivo según los que tengas)
 		this.iconoTiempo = Herramientas.cargarImagen("img/tiempo.png");
 	    this.iconoVidas = Herramientas.cargarImagen("img/vidas.png");
 	    this.iconoCajaPedido = Herramientas.cargarImagen("img/cajaPedido.png");
 	    this.iconoEnemigos = Herramientas.cargarImagen("img/enemigos.png");
 	    this.iconoPedidoActual = Herramientas.cargarImagen("img/pedidoActual.png");
 		
-		// Inicializacion de la grilla de 4x4 cuadras
+		//Inicializacion de la grilla de 4x4 cuadras
 		this.cuadras = new Cuadra[4][4];
 		
 		int offsetX = 130; // Margen inicial horizontal
@@ -151,6 +151,12 @@ public class Juego extends InterfaceJuego
 					int proximoY = this.repartidor.y - 2;
 					boolean colisiona = false;
 					
+					//Limite superior: No puede subir al HUD (50 píxeles)
+					if (proximoY - (altoRepartidor / 2) < 50) {
+						colisiona = true;
+					}
+					
+					//Colision con las cuadras
 					for (int f = 0; f < 4; f++) {
 						for (int c = 0; c < 4; c++) {
 							if (this.cuadras[f][c].hayColision(this.repartidor.x, proximoY, anchoRepartidor, altoRepartidor)) {
@@ -169,6 +175,12 @@ public class Juego extends InterfaceJuego
 					int proximoY = this.repartidor.y + 2;
 					boolean colisiona = false;
 					
+					//Limite inferior de la pantalla
+					if (proximoY + (altoRepartidor / 2) > this.entorno.alto()) {
+						colisiona = true;
+					}
+					
+					//Colision con la cuadra
 					for (int f = 0; f < 4; f++) {
 						for (int c = 0; c < 4; c++) {
 							if (this.cuadras[f][c].hayColision(this.repartidor.x, proximoY, anchoRepartidor, altoRepartidor)) {
@@ -187,6 +199,12 @@ public class Juego extends InterfaceJuego
 					int proximoX = this.repartidor.x - 2;
 					boolean colisiona = false;
 					
+					//Limite izquierda de la pantalla
+					if (proximoX - (anchoRepartidor / 2) < 0) {
+						colisiona = true;
+					}					
+					
+					//Colision con la cuadra
 					for (int f = 0; f < 4; f++) {
 						for (int c = 0; c < 4; c++) {
 							if (this.cuadras[f][c].hayColision(proximoX, this.repartidor.y, anchoRepartidor, altoRepartidor)) {
@@ -205,6 +223,12 @@ public class Juego extends InterfaceJuego
 					int proximoX = this.repartidor.x + 2;
 					boolean colisiona = false;
 					
+					//Limite derecho de la pantalla
+					if (proximoX + (anchoRepartidor / 2) > this.entorno.ancho()) {
+						colisiona = true;
+					}					
+					
+					//Colision con la cuadra
 					for (int f = 0; f < 4; f++) {
 						for (int c = 0; c < 4; c++) {
 							if (this.cuadras[f][c].hayColision(proximoX, this.repartidor.y, anchoRepartidor, altoRepartidor)) {
@@ -221,7 +245,7 @@ public class Juego extends InterfaceJuego
 	//  Movimiento y dibujo de los enemigos
 			for (int i = 0; i < this.enemigos.length; i++) {
 				if (this.enemigos[i] != null) { // Verificamos que no sea null
-					this.enemigos[i].mover();
+					this.enemigos[i].mover(this.entorno.ancho(), this.entorno.alto());
 					this.enemigos[i].dibujar(this.entorno);
 				}
 			} 
