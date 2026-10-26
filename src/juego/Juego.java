@@ -102,13 +102,9 @@ public class Juego extends InterfaceJuego
 	    // A. Fondo general de la barra superior (negro)
 	    this.entorno.dibujarRectangulo(400.0, 25.0, 800.0, 50.0, 0.0, Color.BLACK);
 	    
-	    // Color de fondo para los marcos individuales (un tono más claro para que contraste bien)
+	    // Color de fondo para los marcos individuales
 	    Color colorCuadro = new Color(55, 70, 50);
 	    	    
-	     int minutos = this.tiempoRestantePedido / 60;
-	     int segundos = this.tiempoRestantePedido % 60;
-	     String tiempoStr = (minutos < 10 ? "0" : "") + minutos + ":" + (segundos < 10 ? "0" : "") + segundos;
-
 	     	// --- 1. TIEMPO ---
 		    this.entorno.dibujarRectangulo(82.0, 25.0, 145.0, 36.0, 0.0, colorCuadro);
 		    this.entorno.dibujarImagen(this.iconoTiempo, 30.0, 25.0, 0.0, 0.3);
