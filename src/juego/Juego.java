@@ -30,7 +30,7 @@ public class Juego extends InterfaceJuego
 		this.entorno = new Entorno(this, "Delivery Rush - UNGS", 800, 600);
 		
 		//Inicializar lo que haga falta para el juego
-		this.repartidor = new Repartidor(200, 300); 
+		this.repartidor = new Repartidor(240, 195); 
 		
 		//Cargar iconos para el HUD (ajusta los nombres de archivo según los que tengas)
 		this.iconoTiempo = Herramientas.cargarImagen("img/tiempo.png");
@@ -42,10 +42,10 @@ public class Juego extends InterfaceJuego
 		//Inicializacion de la grilla de 4x4 cuadras
 		this.cuadras = new Cuadra[4][4];
 		
-		int offsetX = 130; // Margen inicial horizontal
-		int offsetY = 120; // Margen inicial vertical 
-		int espacioX = 170; // Separación entre columnas de cuadras
-		int espacioY = 110; // Separación entre filas de cuadras
+		int offsetX = 150; // Margen inicial horizontal
+		int offsetY = 130; // Margen inicial vertical 
+		int espacioX = 180; // Separación entre columnas de cuadras
+		int espacioY = 130; // Separación entre filas de cuadras
 
 		for (int f = 0; f < 4; f++) {
 			for (int c = 0; c < 4; c++) {
@@ -74,10 +74,10 @@ public class Juego extends InterfaceJuego
 	
 	public void tick()
 	{
-		// 1. Limpiar pantalla / Color de fondo del juego
+		// Limpiar pantalla / Color de fondo del juego
 	    this.entorno.colorFondo(Color.DARK_GRAY);
 
-	    // --- 2. CONTROL DEL TIEMPO DEL PEDIDO ---
+	    // CONTROL DEL TIEMPO DEL PEDIDO ---
 	    // Si el repartidor tiene un pedido activo ("En camino")
 	    if (this.repartidor.getEstadoPedido().equals("en camino")) {
 	        
@@ -98,8 +98,8 @@ public class Juego extends InterfaceJuego
 	        this.contadorTicksPedido = 0;
 	    }
 
-	    // 3. Dibujar Encabezado / HUD Superior con Marcos individuales
-	    // A. Fondo general de la barra superior (negro)
+	    // Dibujar Encabezado / HUD Superior con Marcos individuales
+	    // Fondo general de la barra superior (negro)
 	    this.entorno.dibujarRectangulo(400.0, 25.0, 800.0, 50.0, 0.0, Color.BLACK);
 	    
 	    // Color de fondo para los marcos individuales
@@ -245,7 +245,7 @@ public class Juego extends InterfaceJuego
 	//  Movimiento y dibujo de los enemigos
 			for (int i = 0; i < this.enemigos.length; i++) {
 				if (this.enemigos[i] != null) { // Verificamos que no sea null
-					this.enemigos[i].mover(this.entorno.ancho(), this.entorno.alto());
+					this.enemigos[i].mover(this.entorno.ancho(), this.entorno.alto(), this.cuadras);
 					this.enemigos[i].dibujar(this.entorno);
 				}
 			} 
