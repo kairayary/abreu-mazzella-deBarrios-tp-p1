@@ -34,4 +34,10 @@ public class Casa {
 
         return colisionX && colisionY;
     }
+    
+    public boolean estaDentro(int px, int py) {
+        boolean dentroX = px >= (this.x - this.ancho / 2) && px <= (this.x + this.ancho / 2);
+        boolean dentroY = py >= (this.y - this.alto / 2) && py <= (this.y + this.alto / 2);
+        return dentroX && dentroY;
+    }
 }
