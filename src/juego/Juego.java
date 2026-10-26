@@ -15,8 +15,8 @@ public class Juego extends InterfaceJuego
 	private Repartidor repartidor;
 	private Enemigo[] enemigos; // REQUERIMIENTO: Arreglo de objetos obligatorio
 	// --- variables para el HUD:
-	private int tiempoSegundos = 180; 
-	private int contadorTicks = 0;
+	private int tiempoRestantePedido = 20; //Tiempo limite para entregar cada pedido. Regresiva de 20 a 0.
+	private int contadorTicksPedido = 0;  //Controla los segundos del pedido.
 	private int enemigosEliminados = 0;
 	private Image iconoTiempo;
     private Image iconoVidas;
@@ -77,11 +77,25 @@ public class Juego extends InterfaceJuego
 		// 1. Limpiar pantalla / Color de fondo del juego
 	    this.entorno.colorFondo(Color.DARK_GRAY);
 
-	    // 2. Control del tiempo (aproximadamente 60 ticks por segundo)
-	    this.contadorTicks++;
-	    if (this.contadorTicks >= 60 && this.tiempoSegundos > 0) {
-	        this.tiempoSegundos--;
-	        this.contadorTicks = 0;
+	    // --- 2. CONTROL DEL TIEMPO DEL PEDIDO ---
+	    // Si el repartidor tiene un pedido activo ("En camino")
+	    if (this.repartidor.getEstadoPedido().equals("en camino")) {
+	        
+	        this.contadorTicksPedido++;
+	        if (this.contadorTicksPedido >= 60) { // 60 ticks = 1 segundo aprox.
+	            if (this.tiempoRestantePedido > 0) {
+	                this.tiempoRestantePedido--;
+	            } else {
+	                // ¡Se acabó el tiempo! Pierde el pedido y vuelve a estar libre
+	                this.repartidor.setEstadoPedido("pyo en breveserdido"); 
+	                this.tiempoRestantePedido = 20;
+	            }
+	            this.contadorTicksPedido = 0;
+	        }
+	    } else {
+	        // Si no tiene pedido activo, el cronómetro se reinicia y se queda en 20
+	        this.tiempoRestantePedido = 20;
+	        this.contadorTicksPedido = 0;
 	    }
 
 	    // 3. Dibujar Encabezado / HUD Superior con Marcos individuales
@@ -91,15 +105,15 @@ public class Juego extends InterfaceJuego
 	    // Color de fondo para los marcos individuales (un tono más claro para que contraste bien)
 	    Color colorCuadro = new Color(55, 70, 50);
 	    	    
-	     int minutos = this.tiempoSegundos / 60;
-	     int segundos = this.tiempoSegundos % 60;
+	     int minutos = this.tiempoRestantePedido / 60;
+	     int segundos = this.tiempoRestantePedido % 60;
 	     String tiempoStr = (minutos < 10 ? "0" : "") + minutos + ":" + (segundos < 10 ? "0" : "") + segundos;
 
-	  // --- 1. TIEMPO ---
+	     	// --- 1. TIEMPO ---
 		    this.entorno.dibujarRectangulo(82.0, 25.0, 145.0, 36.0, 0.0, colorCuadro);
 		    this.entorno.dibujarImagen(this.iconoTiempo, 30.0, 25.0, 0.0, 0.3);
 		    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-		    this.entorno.escribirTexto("Tiempo: " + tiempoStr, 50, 30);
+		    this.entorno.escribirTexto("Tiempo: " + tiempoRestantePedido + "s", 50, 30);
 
 		    // --- 2. VIDAS ---
 		    this.entorno.dibujarRectangulo(230.0, 25.0, 130.0, 36.0, 0.0, colorCuadro);
@@ -125,14 +139,14 @@ public class Juego extends InterfaceJuego
 		    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
 		    this.entorno.escribirTexto("Pedido: " + this.repartidor.getEstadoPedido(), 695, 30);
 	    
-	    // Dibuja la grilla de la ciudad (Cuadras, Casas y Negocios)
-		for (int f = 0; f < 4; f++) {
-			for (int c = 0; c < 4; c++) {
-				this.cuadras[f][c].dibujar(this.entorno);
-			}
-		}
+		    // Dibuja la grilla de la ciudad (Cuadras, Casas y Negocios)
+		    for (int f = 0; f < 4; f++) {
+		    	for (int c = 0; c < 4; c++) {
+		    		this.cuadras[f][c].dibujar(this.entorno);
+		    	}
+		    }
 
-		// Definimos las dimensiones de la caja de colisión del repartidor
+		    // Definimos las dimensiones de la caja de colisión del repartidor
 				int anchoRepartidor = 30;
 				int altoRepartidor = 40;
 

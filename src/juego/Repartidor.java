@@ -43,6 +43,10 @@ public class Repartidor {
         entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.25);
     }
     
+    public void setEstadoPedido(String nuevoEstado) {
+    	this.estadoPedido = nuevoEstado;
+    }
+    
     // Métodos de movimiento directos
     public void moverArriba() { 
         this.y -= 2; 
