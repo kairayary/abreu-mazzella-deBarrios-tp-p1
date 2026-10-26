@@ -11,6 +11,8 @@ public class Repartidor {
     int ancho;
     int alto;
     int vidas;
+    int pedidosEntregados;
+    String estadoPedido;
     Image imagen;
 
     public Repartidor(int xInicio, int yInicio) {
@@ -19,31 +21,46 @@ public class Repartidor {
         this.ancho = 30;
         this.alto = 40;
         this.vidas = 3; 
+        this.pedidosEntregados = 0;
+        this.estadoPedido = "Ninguno";   // Estado inicial del pedido
         this.imagen = Herramientas.cargarImagen("img/deliveryBoy.png");
     }
     
+    // Métodos Getters y Setters requeridos para el HUD y la lógica
+    public int getVidas() {
+    	return this.vidas;
+    }
+    
+    public int getPedidosEntregados() { 
+    	return this.pedidosEntregados;
+    }
+    
+    public String getEstadoPedido() {
+    	return this.estadoPedido;
+    }
+
+    public void setEstadoPedido(String estadoPedido) {
+        this.estadoPedido = estadoPedido;
+    }
+    
     public void dibujar(Entorno entorno){
-        entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.10);
+        entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.25);
     }
     
-    // Métodos de movimiento directos
-    public void moverArriba() { 
-        this.y -= 2; 
+    // Métodos de movimiento
+    public void moverArriba() {
+        this.y -= 2;
     }
-    
-    public void moverAbajo() { 
-        this.y += 2; 
+
+    public void moverAbajo() {
+        this.y += 2;
     }
-    
-    public void moverIzquierda() { 
-        this.x -= 2; 
+
+    public void moverIzquierda() {
+        this.x -= 2;
     }
-    
-    public void moverDerecha() { 
-        this.x += 2; 
-    }
-    
-    public void imprimir() {
-        System.out.println("Repartidor en X: " + this.x + " | Y: " + this.y + " | Vidas: " + this.vidas);
+
+    public void moverDerecha() {
+        this.x += 2;
     }
 }

@@ -1,7 +1,9 @@
 package juego;
 
 import java.awt.Color;
+import java.awt.Image;
 import entorno.Entorno;
+import entorno.Herramientas;
 import entorno.InterfaceJuego;
 
 public class Juego extends InterfaceJuego
@@ -11,7 +13,15 @@ public class Juego extends InterfaceJuego
 	private Repartidor repartidor;
 	private Enemigo[] enemigos; 
 	
-	// Variables para la Dinámica de Pedidos (Requerimiento 2)
+	// --- Variables para el HUD visual (de Natalia) ---
+	private int enemigosEliminados = 0;
+	private Image iconoTiempo;
+    private Image iconoVidas;
+    private Image iconoCajaPedido;
+    private Image iconoEnemigos;
+    private Image iconoPedidoActual;
+	
+	// --- Variables para la Dinámica de Pedidos y Temporizador (de Kaira) ---
 	private int estadoPedido = 0; // 0 = Esperando (ir al negocio), 1 = En camino (ir a la casa)
 	private Negocio negocioDestinoActual = null;
 	private Casa casaDestinoActual = null;
@@ -27,6 +37,13 @@ public class Juego extends InterfaceJuego
 		
 		// Inicializar el repartidor
 		this.repartidor = new Repartidor(200, 300); 
+		
+		// Cargar iconos para el HUD
+		this.iconoTiempo = Herramientas.cargarImagen("img/tiempo.png");
+	    this.iconoVidas = Herramientas.cargarImagen("img/vidas.png");
+	    this.iconoCajaPedido = Herramientas.cargarImagen("img/cajaPedido.png");
+	    this.iconoEnemigos = Herramientas.cargarImagen("img/enemigos.png");
+	    this.iconoPedidoActual = Herramientas.cargarImagen("img/pedidoActual.png");
 		
 		// Inicializacion de la grilla de 4x4 cuadras
 		this.cuadras = new Cuadra[4][4];
@@ -58,7 +75,7 @@ public class Juego extends InterfaceJuego
 		this.entorno.iniciar();
 	}
 
-	// Método auxiliar para generar un pedido aleatorio (Requerimiento 2)
+	// Método auxiliar para generar un pedido aleatorio
 	private void generarNuevoPedido() {
 		int fNeg = (int) (Math.random() * 4);
 		int cNeg = (int) (Math.random() * 4);
@@ -76,7 +93,47 @@ public class Juego extends InterfaceJuego
 
 	public void tick()
 	{
-		// 1. Dibuja la grilla de la ciudad (Cuadras, Casas y Negocios)
+		// 1. Color de fondo del juego
+	    this.entorno.colorFondo(Color.DARK_GRAY);
+
+	    // --- 2. DIBUJAR ENCABEZADO / HUD SUPERIOR (Diseño Natalia) ---
+	    this.entorno.dibujarRectangulo(400.0, 25.0, 800.0, 50.0, 0.0, Color.BLACK);
+	    Color colorCuadro = new Color(55, 70, 50);
+	    
+	    int segundosRestantes = this.tiempoRestante / 60; // Conversión aproximada de ticks a segundos
+
+	    // A. TIEMPO
+	    this.entorno.dibujarRectangulo(82.0, 25.0, 145.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoTiempo, 30.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+	    this.entorno.escribirTexto("Tiempo: " + segundosRestantes + "s", 50, 30);
+
+	    // B. VIDAS
+	    this.entorno.dibujarRectangulo(230.0, 25.0, 130.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoVidas, 185.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+	    this.entorno.escribirTexto("Vidas: " + this.repartidor.vidas, 205, 30);
+
+	    // C. PEDIDOS ENTREGADOS
+	    this.entorno.dibujarRectangulo(395.0, 25.0, 175.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoCajaPedido, 325.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+	    this.entorno.escribirTexto("Entregados: " + this.pedidosEntregados, 345, 30);
+
+	    // D. ENEMIGOS ELIMINADOS
+	    this.entorno.dibujarRectangulo(570.0, 25.0, 155.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoEnemigos, 515.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+	    this.entorno.escribirTexto("Eliminados: " + this.enemigosEliminados, 535, 30);
+
+	    // E. ESTADO DEL PEDIDO
+	    String textoEstado = (this.estadoPedido == 0) ? "Esperando" : "En camino";
+	    this.entorno.dibujarRectangulo(722.0, 25.0, 135.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoPedidoActual, 675.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+	    this.entorno.escribirTexto("Pedido: " + textoEstado, 695, 30);
+
+		// 3. Dibuja la grilla de la ciudad (Cuadras, Casas y Negocios)
 		for (int f = 0; f < 4; f++) {
 			for (int c = 0; c < 4; c++) {
 				this.cuadras[f][c].dibujar(this.entorno);
@@ -180,25 +237,17 @@ public class Juego extends InterfaceJuego
 			}
 		}
 
-		// --- Dinámica de Pedidos: Detección de Clic Derecho (Requerimiento 2) ---
-		if (this.entorno.sePresionoBotonDerecho()) {
-			// Estado 0: El repartidor debe estar sobre el negocio y hacer clic derecho para tomarlo
-			if (this.estadoPedido == 0 && this.negocioDestinoActual != null) {
-				if (this.negocioDestinoActual.colisionaCon(repartidor.x, repartidor.y, repartidor.ancho, repartidor.alto)) {
-					this.estadoPedido = 1; // Pasamos a estado "En camino"
-					this.tiempoRestante = TIEMPO_MAXIMO; // Reiniciamos el reloj para la entrega
-					System.out.println("¡Pedido recogido! En camino a la casa de destino.");
+		// --- Dinámica de Pedidos: Activación con la tecla 'E' (Reemplazo del Clic) ---
+				if (this.entorno.estaPresionada('e') || this.entorno.estaPresionada('E')) {
+					// Estado 0: El repartidor debe estar sobre el negocio y presionar 'E' para tomarlo
+					if (this.estadoPedido == 0 && this.negocioDestinoActual != null) {
+						if (this.negocioDestinoActual.colisionaCon(repartidor.x, repartidor.y, repartidor.ancho, repartidor.alto)) {
+							this.estadoPedido = 1; // Pasamos a estado "En camino"
+							this.tiempoRestante = TIEMPO_MAXIMO; // Reiniciamos el reloj para la entrega
+							System.out.println("¡Pedido recogido! En camino a la casa de destino.");
+						}
+					}
 				}
-			} 
-			// Estado 1: El repartidor debe estar sobre la casa correcta y hacer clic derecho para entregar
-			else if (this.estadoPedido == 1 && this.casaDestinoActual != null) {
-				if (this.casaDestinoActual.colisionaCon(repartidor.x, repartidor.y, repartidor.ancho, repartidor.alto)) {
-					this.pedidosEntregados++;
-					System.out.println("¡Pedido entregado con éxito! Total entregados: " + this.pedidosEntregados);
-					generarNuevoPedido(); // Se genera el siguiente pedido
-				}
-			}
-		}
 	}
 	
 	@SuppressWarnings("unused")

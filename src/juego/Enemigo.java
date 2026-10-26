@@ -34,6 +34,6 @@ public class Enemigo {
     
     // Método para dibujar al enemigo en la pantalla
     public void dibujar(Entorno entorno){
-    	entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.18);
+    	entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.25);
     }
 }
