@@ -56,10 +56,10 @@ public class Juego extends InterfaceJuego
 		}
 		
 		this.enemigos = new Enemigo[4]; // Tamaño fijo de al menos 4 enemigos
-		this.enemigos[0] = new Enemigo(100, 100, "HORIZONTAL");
-		this.enemigos[1] = new Enemigo(300, 200, "VERTICAL");
-		this.enemigos[2] = new Enemigo(500, 100, "HORIZONTAL");
-		this.enemigos[3] = new Enemigo(200, 400, "VERTICAL");
+		this.enemigos[0] = new Enemigo(240, 195, "HORIZONTAL");
+		this.enemigos[1] = new Enemigo(420, 195, "VERTICAL");
+		this.enemigos[2] = new Enemigo(240, 325, "HORIZONTAL");
+		this.enemigos[3] = new Enemigo(600, 325, "VERTICAL");
 
 		// Inicia el juego!
 		this.entorno.iniciar();
