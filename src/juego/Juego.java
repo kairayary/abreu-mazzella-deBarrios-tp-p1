@@ -13,7 +13,7 @@ public class Juego extends InterfaceJuego
 	private Repartidor repartidor;
 	private Enemigo[] enemigos; 
 	
-	// --- Variables para el HUD visual (de Natalia) ---
+	// Variables para el HUD visual  
 	private int enemigosEliminados = 0;
 	private Image iconoTiempo;
     private Image iconoVidas;
@@ -21,7 +21,7 @@ public class Juego extends InterfaceJuego
     private Image iconoEnemigos;
     private Image iconoPedidoActual;
 	
-	// --- Variables para la Dinámica de Pedidos y Temporizador (de Kaira) ---
+	// Variables para la Dinámica de Pedidos y Temporizador 
 	private int estadoPedido = 0; // 0 = Esperando (ir al negocio), 1 = En camino (ir a la casa)
 	private Negocio negocioDestinoActual = null;
 	private Casa casaDestinoActual = null;
@@ -29,6 +29,8 @@ public class Juego extends InterfaceJuego
 	private final int TIEMPO_MAXIMO = 1500; // Ticks límites para completar el pedido
 	private int pedidosEntregados = 0;
 	private int pedidosPerdidos = 0;
+	private Image iconoFlechaRoja;
+	private Image iconoFlechaVerde;
 
 	Juego()
 	{
@@ -38,12 +40,14 @@ public class Juego extends InterfaceJuego
 		// Inicializar el repartidor
 		this.repartidor = new Repartidor(200, 300); 
 		
-		// Cargar iconos para el HUD
+		// Cargar iconos para el HUD y las flechas indicadoras
 		this.iconoTiempo = Herramientas.cargarImagen("img/tiempo.png");
 	    this.iconoVidas = Herramientas.cargarImagen("img/vidas.png");
 	    this.iconoCajaPedido = Herramientas.cargarImagen("img/cajaPedido.png");
 	    this.iconoEnemigos = Herramientas.cargarImagen("img/enemigos.png");
 	    this.iconoPedidoActual = Herramientas.cargarImagen("img/pedidoActual.png");
+	    this.iconoFlechaRoja = Herramientas.cargarImagen("img/flechaRoja.png");
+	    this.iconoFlechaVerde = Herramientas.cargarImagen("img/flechaVerde.png");
 		
 		// Inicializacion de la grilla de 4x4 cuadras
 		this.cuadras = new Cuadra[4][4];
@@ -93,52 +97,59 @@ public class Juego extends InterfaceJuego
 
 	public void tick()
 	{
-		// 1. Color de fondo del juego
+		// Color de fondo del juego
 	    this.entorno.colorFondo(Color.DARK_GRAY);
 
-	    // --- 2. DIBUJAR ENCABEZADO / HUD SUPERIOR (Diseño Natalia) ---
+	    // DIBUJAR ENCABEZADO / HUD SUPERIOR 
 	    this.entorno.dibujarRectangulo(400.0, 25.0, 800.0, 50.0, 0.0, Color.BLACK);
 	    Color colorCuadro = new Color(55, 70, 50);
 	    
 	    int segundosRestantes = this.tiempoRestante / 60; // Conversión aproximada de ticks a segundos
 
-	    // A. TIEMPO
+	    // TIEMPO
 	    this.entorno.dibujarRectangulo(82.0, 25.0, 145.0, 36.0, 0.0, colorCuadro);
 	    this.entorno.dibujarImagen(this.iconoTiempo, 30.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
 	    this.entorno.escribirTexto("Tiempo: " + segundosRestantes + "s", 50, 30);
 
-	    // B. VIDAS
+	    // VIDAS
 	    this.entorno.dibujarRectangulo(230.0, 25.0, 130.0, 36.0, 0.0, colorCuadro);
 	    this.entorno.dibujarImagen(this.iconoVidas, 185.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
 	    this.entorno.escribirTexto("Vidas: " + this.repartidor.vidas, 205, 30);
 
-	    // C. PEDIDOS ENTREGADOS
+	    // PEDIDOS ENTREGADOS
 	    this.entorno.dibujarRectangulo(395.0, 25.0, 175.0, 36.0, 0.0, colorCuadro);
 	    this.entorno.dibujarImagen(this.iconoCajaPedido, 325.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
 	    this.entorno.escribirTexto("Entregados: " + this.pedidosEntregados, 345, 30);
 
-	    // D. ENEMIGOS ELIMINADOS
+	    // ENEMIGOS ELIMINADOS
 	    this.entorno.dibujarRectangulo(570.0, 25.0, 155.0, 36.0, 0.0, colorCuadro);
 	    this.entorno.dibujarImagen(this.iconoEnemigos, 515.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
 	    this.entorno.escribirTexto("Eliminados: " + this.enemigosEliminados, 535, 30);
 
-	    // E. ESTADO DEL PEDIDO
+	    // ESTADO DEL PEDIDO
 	    String textoEstado = (this.estadoPedido == 0) ? "Esperando" : "En camino";
 	    this.entorno.dibujarRectangulo(722.0, 25.0, 135.0, 36.0, 0.0, colorCuadro);
 	    this.entorno.dibujarImagen(this.iconoPedidoActual, 675.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
 	    this.entorno.escribirTexto("Pedido: " + textoEstado, 695, 30);
 
-		// 3. Dibuja la grilla de la ciudad (Cuadras, Casas y Negocios)
-		for (int f = 0; f < 4; f++) {
-			for (int c = 0; c < 4; c++) {
-				this.cuadras[f][c].dibujar(this.entorno);
-			}
-		}
+		// Dibuja la grilla de la ciudad (Cuadras, Casas y Negocios)
+	    for (int f = 0; f < 4; f++) {
+	        for (int c = 0; c < 4; c++) {
+	            this.cuadras[f][c].dibujar(this.entorno);
+	        }
+	    }
+	    
+	    // DIBUJAR FLECHA INDICADORA SEGÚN EL ESTADO DEL PEDIDO 
+	    if (this.estadoPedido == 0 && this.negocioDestinoActual != null) {
+	        this.entorno.dibujarImagen(this.iconoFlechaRoja, this.negocioDestinoActual.x, this.negocioDestinoActual.y - 35, 0, 0.25);
+	    } else if (this.estadoPedido == 1 && this.casaDestinoActual != null) {
+	        this.entorno.dibujarImagen(this.iconoFlechaVerde, this.casaDestinoActual.x, this.casaDestinoActual.y - 35, 0, 0.25);
+	    }
 
 		// Dimensiones de la caja de colisión del repartidor
 		int anchoRepartidor = 30;
@@ -148,6 +159,11 @@ public class Juego extends InterfaceJuego
 		if (this.entorno.estaPresionada('w') || this.entorno.estaPresionada('W')) {
 			int proximoY = this.repartidor.y - 2;
 			boolean colisiona = false;
+			
+			// Límite superior de la pantalla (HUD)
+			if (proximoY - (altoRepartidor / 2) < 50) {
+				colisiona = true;
+			}
 			
 			for (int f = 0; f < 4; f++) {
 				for (int c = 0; c < 4; c++) {
@@ -161,11 +177,16 @@ public class Juego extends InterfaceJuego
 				this.repartidor.moverArriba();
 			}
 		}
-
+				
 		// --- Movimiento abajo (S) ---
 		if (this.entorno.estaPresionada('s') || this.entorno.estaPresionada('S')) {
 			int proximoY = this.repartidor.y + 2;
 			boolean colisiona = false;
+			
+			// Límite inferior de la pantalla
+			if (proximoY + (altoRepartidor / 2) > this.entorno.alto()) {
+				colisiona = true;
+			}
 			
 			for (int f = 0; f < 4; f++) {
 				for (int c = 0; c < 4; c++) {
@@ -185,6 +206,11 @@ public class Juego extends InterfaceJuego
 			int proximoX = this.repartidor.x - 2;
 			boolean colisiona = false;
 			
+			// Límite izquierdo de la pantalla
+			if (proximoX - (anchoRepartidor / 2) < 0) {
+				colisiona = true;
+			}
+			
 			for (int f = 0; f < 4; f++) {
 				for (int c = 0; c < 4; c++) {
 					if (this.cuadras[f][c].hayColision(proximoX, this.repartidor.y, anchoRepartidor, altoRepartidor)) {
@@ -202,6 +228,11 @@ public class Juego extends InterfaceJuego
 		if (this.entorno.estaPresionada('d') || this.entorno.estaPresionada('D')) {
 			int proximoX = this.repartidor.x + 2;
 			boolean colisiona = false;
+			
+			// Límite derecho de la pantalla
+			if (proximoX + (anchoRepartidor / 2) > this.entorno.ancho()) {
+			    colisiona = true;
+			}
 			
 			for (int f = 0; f < 4; f++) {
 				for (int c = 0; c < 4; c++) {
@@ -237,17 +268,25 @@ public class Juego extends InterfaceJuego
 			}
 		}
 
-		// --- Dinámica de Pedidos: Activación con la tecla 'E' (Reemplazo del Clic) ---
-				if (this.entorno.estaPresionada('e') || this.entorno.estaPresionada('E')) {
-					// Estado 0: El repartidor debe estar sobre el negocio y presionar 'E' para tomarlo
-					if (this.estadoPedido == 0 && this.negocioDestinoActual != null) {
-						if (this.negocioDestinoActual.colisionaCon(repartidor.x, repartidor.y, repartidor.ancho, repartidor.alto)) {
-							this.estadoPedido = 1; // Pasamos a estado "En camino"
-							this.tiempoRestante = TIEMPO_MAXIMO; // Reiniciamos el reloj para la entrega
-							System.out.println("¡Pedido recogido! En camino a la casa de destino.");
-						}
-					}
+		// --- Dinámica de Pedidos: Activación con la tecla 'E' ---
+		if (this.entorno.estaPresionada('e') || this.entorno.estaPresionada('E')) {
+			// Estado 0: Tomar pedido en el negocio
+			if (this.estadoPedido == 0 && this.negocioDestinoActual != null) {
+				if (this.negocioDestinoActual.colisionaCon(repartidor.x, repartidor.y, repartidor.ancho, repartidor.alto)) {
+					this.estadoPedido = 1; // Pasamos a "En camino"
+					this.tiempoRestante = TIEMPO_MAXIMO; 
+					System.out.println("¡Pedido recogido! En camino a la casa de destino.");
 				}
+			} 
+			// Estado 1: Entregar pedido en la casa destino
+			else if (this.estadoPedido == 1 && this.casaDestinoActual != null) {
+				if (this.casaDestinoActual.colisionaCon(repartidor.x, repartidor.y, repartidor.ancho, repartidor.alto)) {
+					this.pedidosEntregados++;
+					System.out.println("¡Pedido entregado con éxito!");
+					generarNuevoPedido(); // Nuevo ciclo de pedido
+				}
+			}
+		}
 	}
 	
 	@SuppressWarnings("unused")
