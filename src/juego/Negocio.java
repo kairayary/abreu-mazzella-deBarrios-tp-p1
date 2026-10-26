@@ -1,23 +1,26 @@
 package juego;
 
 import entorno.Entorno;
-import java.awt.Color;
+import entorno.Herramientas;
+import java.awt.Image;
 
 public class Negocio {
     int x;
     int y;
     int ancho;
     int alto;
+    Image imagen;
 
     public Negocio(int x, int y) {
         this.x = x;
         this.y = y;
         this.ancho = 45;
         this.alto = 35;
+        this.imagen = Herramientas.cargarImagen("img/negocio.png");
     }
 
     public void dibujar(Entorno entorno) {
-        entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.ORANGE);
+    	entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.25);
     }
     
     public boolean colisionaCon(int xRepartidor, int yRepartidor, int anchoRepartidor, int altoRepartidor) {

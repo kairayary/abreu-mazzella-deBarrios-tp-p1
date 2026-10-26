@@ -1,8 +1,11 @@
 package juego;
 
 import java.awt.Color;
+import java.awt.Image;
 import entorno.Entorno;
+import entorno.Herramientas;
 import entorno.InterfaceJuego;
+
 
 public class Juego extends InterfaceJuego
 {
@@ -11,6 +14,15 @@ public class Juego extends InterfaceJuego
 	private Cuadra[][] cuadras;
 	private Repartidor repartidor;
 	private Enemigo[] enemigos; // REQUERIMIENTO: Arreglo de objetos obligatorio
+	// --- variables para el HUD:
+	private int tiempoSegundos = 180; 
+	private int contadorTicks = 0;
+	private int enemigosEliminados = 0;
+	private Image iconoTiempo;
+    private Image iconoVidas;
+    private Image iconoCajaPedido;
+    private Image iconoEnemigos;
+    private Image iconoPedidoActual;
 	
 	Juego()
 	{
@@ -19,6 +31,13 @@ public class Juego extends InterfaceJuego
 		
 		// Inicializar lo que haga falta para el juego
 		this.repartidor = new Repartidor(200, 300); 
+		
+		// Cargar iconos para el HUD (ajusta los nombres de archivo según los que tengas)
+		this.iconoTiempo = Herramientas.cargarImagen("img/tiempo.png");
+	    this.iconoVidas = Herramientas.cargarImagen("img/vidas.png");
+	    this.iconoCajaPedido = Herramientas.cargarImagen("img/cajaPedido.png");
+	    this.iconoEnemigos = Herramientas.cargarImagen("img/enemigos.png");
+	    this.iconoPedidoActual = Herramientas.cargarImagen("img/pedidoActual.png");
 		
 		// Inicializacion de la grilla de 4x4 cuadras
 		this.cuadras = new Cuadra[4][4];
@@ -52,9 +71,61 @@ public class Juego extends InterfaceJuego
 - 	actualizar el estado interno del juego para simular el paso del tiempo 
 - 	(ver el enunciado del TP para mayor detalle).
 	 */
+	
 	public void tick()
 	{
-		// Dibuja la grilla de la ciudad (Cuadras, Casas y Negocios)
+		// 1. Limpiar pantalla / Color de fondo del juego
+	    this.entorno.colorFondo(Color.DARK_GRAY);
+
+	    // 2. Control del tiempo (aproximadamente 60 ticks por segundo)
+	    this.contadorTicks++;
+	    if (this.contadorTicks >= 60 && this.tiempoSegundos > 0) {
+	        this.tiempoSegundos--;
+	        this.contadorTicks = 0;
+	    }
+
+	    // 3. Dibujar Encabezado / HUD Superior con Marcos individuales
+	    // A. Fondo general de la barra superior (negro)
+	    this.entorno.dibujarRectangulo(400.0, 25.0, 800.0, 50.0, 0.0, Color.BLACK);
+	    
+	    // Color de fondo para los marcos individuales (un tono más claro para que contraste bien)
+	    Color colorCuadro = new Color(55, 70, 50);
+	    	    
+	     int minutos = this.tiempoSegundos / 60;
+	     int segundos = this.tiempoSegundos % 60;
+	     String tiempoStr = (minutos < 10 ? "0" : "") + minutos + ":" + (segundos < 10 ? "0" : "") + segundos;
+
+	  // --- 1. TIEMPO ---
+		    this.entorno.dibujarRectangulo(82.0, 25.0, 145.0, 36.0, 0.0, colorCuadro);
+		    this.entorno.dibujarImagen(this.iconoTiempo, 30.0, 25.0, 0.0, 0.3);
+		    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+		    this.entorno.escribirTexto("Tiempo: " + tiempoStr, 50, 30);
+
+		    // --- 2. VIDAS ---
+		    this.entorno.dibujarRectangulo(230.0, 25.0, 130.0, 36.0, 0.0, colorCuadro);
+		    this.entorno.dibujarImagen(this.iconoVidas, 185.0, 25.0, 0.0, 0.3);
+		    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+		    this.entorno.escribirTexto("Vidas: " + this.repartidor.getVidas(), 205, 30);
+
+		    // --- 3. PEDIDOS ENTREGADOS ---
+		    this.entorno.dibujarRectangulo(395.0, 25.0, 175.0, 36.0, 0.0, colorCuadro);
+		    this.entorno.dibujarImagen(this.iconoCajaPedido, 325.0, 25.0, 0.0, 0.3);
+		    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+		    this.entorno.escribirTexto("Entregados: " + this.repartidor.getPedidosEntregados(), 345, 30);
+
+		    // --- 4. ENEMIGOS ELIMINADOS ---
+		    this.entorno.dibujarRectangulo(570.0, 25.0, 155.0, 36.0, 0.0, colorCuadro);
+		    this.entorno.dibujarImagen(this.iconoEnemigos, 515.0, 25.0, 0.0, 0.3);
+		    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+		    this.entorno.escribirTexto("Eliminados: " + this.enemigosEliminados, 535, 30);
+
+		    // --- 5. ESTADO DEL PEDIDO ---
+		    this.entorno.dibujarRectangulo(722.0, 25.0, 135.0, 36.0, 0.0, colorCuadro);
+		    this.entorno.dibujarImagen(this.iconoPedidoActual, 675.0, 25.0, 0.0, 0.3);
+		    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+		    this.entorno.escribirTexto("Pedido: " + this.repartidor.getEstadoPedido(), 695, 30);
+	    
+	    // Dibuja la grilla de la ciudad (Cuadras, Casas y Negocios)
 		for (int f = 0; f < 4; f++) {
 			for (int c = 0; c < 4; c++) {
 				this.cuadras[f][c].dibujar(this.entorno);
