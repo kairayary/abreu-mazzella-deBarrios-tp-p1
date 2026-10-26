@@ -16,6 +16,11 @@ public class Casa {
         this.alto = 30;
     }
     
+    public void dibujar(Entorno entorno) {
+        // Por ahora dibujamos un rectángulo representativo (luego se puede cambiar por imagen)
+        entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.BLUE);
+    }
+    
     public boolean colisionaCon(int xRepartidor, int yRepartidor, int anchoRepartidor, int altoRepartidor) {
         int diferenciaX = this.x - xRepartidor;
         int umbralX = (this.ancho + anchoRepartidor) / 2;
@@ -27,8 +32,11 @@ public class Casa {
 
         return colisionX && colisionY;
     }
-    public void dibujar(Entorno entorno) {
-        // Por ahora dibujamos un rectángulo representativo (luego se puede cambiar por imagen)
-        entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.BLUE);
+    
+    public boolean estaDentro(int px, int py) {
+        boolean dentroX = px >= (this.x - this.ancho / 2) && px <= (this.x + this.ancho / 2);
+        boolean dentroY = py >= (this.y - this.alto / 2) && py <= (this.y + this.alto / 2);
+        return dentroX && dentroY;
     }
+  
 }

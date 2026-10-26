@@ -33,4 +33,10 @@ public class Negocio {
 
         return left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2;
     }
+    
+    public boolean estaDentro(int px, int py) {
+        boolean dentroX = px >= (this.x - this.ancho / 2) && px <= (this.x + this.ancho / 2);
+        boolean dentroY = py >= (this.y - this.alto / 2) && py <= (this.y + this.alto / 2);
+        return dentroX && dentroY;
+    }
 }

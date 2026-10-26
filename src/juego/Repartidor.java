@@ -23,7 +23,7 @@ public class Repartidor {
     }
     
     public void dibujar(Entorno entorno){
-        entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.11);
+        entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.10);
     }
     
     // Métodos de movimiento directos
