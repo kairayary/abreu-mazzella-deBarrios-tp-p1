@@ -21,11 +21,8 @@ public class Juego extends InterfaceJuego
     private Image iconoEnemigos;
     private Image iconoPedidoActual;
 	
-<<<<<<< Updated upstream
+
 	// Variables para la Dinámica de Pedidos y Temporizador 
-=======
-	//Variables para la Dinámica de Pedidos y Temporizador 
->>>>>>> Stashed changes
 	private int estadoPedido = 0; // 0 = Esperando (ir al negocio), 1 = En camino (ir a la casa)
 	private Negocio negocioDestinoActual = null;
 	private Casa casaDestinoActual = null;
@@ -71,10 +68,10 @@ public class Juego extends InterfaceJuego
 		
 		// Inicialización de enemigos
 		this.enemigos = new Enemigo[4];
-		this.enemigos[0] = new Enemigo(100, 100, "HORIZONTAL");
-		this.enemigos[1] = new Enemigo(300, 200, "VERTICAL");
-		this.enemigos[2] = new Enemigo(500, 100, "HORIZONTAL");
-		this.enemigos[3] = new Enemigo(200, 400, "VERTICAL");
+		this.enemigos[0] = new Enemigo(240, 195, "HORIZONTAL"); // Calle libre horizontal
+		this.enemigos[1] = new Enemigo(420, 195, "VERTICAL");   // Calle libre vertical
+		this.enemigos[2] = new Enemigo(240, 325, "HORIZONTAL"); // Calle libre horizontal
+		this.enemigos[3] = new Enemigo(600, 325, "VERTICAL");   // Calle libre vertical
 
 		// Generar el primer pedido al iniciar el juego
 		generarNuevoPedido();
@@ -101,11 +98,6 @@ public class Juego extends InterfaceJuego
 
 	public void tick()
 	{
-<<<<<<< Updated upstream
-		// Color de fondo del juego
-=======
-		//Color de fondo del juego
->>>>>>> Stashed changes
 	    this.entorno.colorFondo(Color.DARK_GRAY);
 
 	    // DIBUJAR ENCABEZADO / HUD SUPERIOR 
@@ -152,19 +144,19 @@ public class Juego extends InterfaceJuego
 	        }
 	    }
 	    
-<<<<<<< Updated upstream
 	    // DIBUJAR FLECHA INDICADORA SEGÚN EL ESTADO DEL PEDIDO 
 	    if (this.estadoPedido == 0 && this.negocioDestinoActual != null) {
 	        this.entorno.dibujarImagen(this.iconoFlechaRoja, this.negocioDestinoActual.x, this.negocioDestinoActual.y - 35, 0, 0.25);
 	    } else if (this.estadoPedido == 1 && this.casaDestinoActual != null) {
-=======
+	    	
+	    }
 	 //  DIBUJAR FLECHA INDICADORA SEGÚN EL ESTADO DEL PEDIDO 
 	    if (this.estadoPedido == 0 && this.negocioDestinoActual != null) {
 	        // Estado 0 (Esperando): Flecha roja apuntando al negocio (escala 0.25 para que se vea bien)
 	        this.entorno.dibujarImagen(this.iconoFlechaRoja, this.negocioDestinoActual.x, this.negocioDestinoActual.y - 35, 0, 0.25);
 	    } else if (this.estadoPedido == 1 && this.casaDestinoActual != null) {
 	        // Estado 1 (En camino): Flecha verde apuntando a la casa de destino
->>>>>>> Stashed changes
+
 	        this.entorno.dibujarImagen(this.iconoFlechaVerde, this.casaDestinoActual.x, this.casaDestinoActual.y - 35, 0, 0.25);
 	    }
 
@@ -174,7 +166,7 @@ public class Juego extends InterfaceJuego
 
 
 		// --- Movimiento arriba (W) ---
-<<<<<<< Updated upstream
+
 		if (this.entorno.estaPresionada('w') || this.entorno.estaPresionada('W')) {
 			int proximoY = this.repartidor.y - 2;
 			boolean colisiona = false;
@@ -184,6 +176,7 @@ public class Juego extends InterfaceJuego
 				colisiona = true;
 			}
 			
+			// Colisión con las cuadras
 			for (int f = 0; f < 4; f++) {
 				for (int c = 0; c < 4; c++) {
 					if (this.cuadras[f][c].hayColision(this.repartidor.x, proximoY, anchoRepartidor, altoRepartidor)) {
@@ -196,7 +189,7 @@ public class Juego extends InterfaceJuego
 				this.repartidor.moverArriba();
 			}
 		}
-=======
+
 				if (this.entorno.estaPresionada('w') || this.entorno.estaPresionada('W')) {
 					int proximoY = this.repartidor.y - 2;
 					boolean colisiona = false;
@@ -213,7 +206,6 @@ public class Juego extends InterfaceJuego
 						this.repartidor.moverArriba();
 					}
 				}
->>>>>>> Stashed changes
 				
 		// --- Movimiento abajo (S) ---
 		if (this.entorno.estaPresionada('s') || this.entorno.estaPresionada('S')) {
@@ -234,7 +226,7 @@ public class Juego extends InterfaceJuego
 			}
 			
 			if (!colisiona) {
-				this.repartidor.moverAbajo();
+				this.repartidor.moverAbajo(this.entorno.alto());
 			}
 		}
 
@@ -281,17 +273,17 @@ public class Juego extends InterfaceJuego
 			}
 			
 			if (!colisiona) {
-				this.repartidor.moverDerecha();
+				this.repartidor.moverDerecha(this.entorno.ancho());
 			}
 		}
 		
 		// --- Movimiento y dibujo de los enemigos ---
 		for (int i = 0; i < this.enemigos.length; i++) {
-			if (this.enemigos[i] != null) {
-				this.enemigos[i].mover();
-				this.enemigos[i].dibujar(this.entorno);
-			}
-		} 
+	        if (this.enemigos[i] != null) { 
+	            this.enemigos[i].mover(this.entorno.ancho(), this.entorno.alto(), this.cuadras);
+	            this.enemigos[i].dibujar(this.entorno);
+	        }
+	    }
 		
 		// --- Dibujamos al repartidor ---
 		this.repartidor.dibujar(this.entorno);
