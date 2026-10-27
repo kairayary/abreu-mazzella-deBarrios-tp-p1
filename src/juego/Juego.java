@@ -36,7 +36,9 @@ public class Juego extends InterfaceJuego
 	Juego()
 	{
 		this.entorno = new Entorno(this, "Delivery Rush - UNGS", 800, 600);
-		this.repartidor = new Repartidor(200, 500); 
+		
+		// Posicionar al repartidor en el margen inferior izquierdo (Requerimiento 1)[cite: 4]
+		this.repartidor = new Repartidor(70, 530); 
 		this.proyectil = null;
 		
 		this.iconoTiempo = Herramientas.cargarImagen("img/tiempo.png");
@@ -90,41 +92,41 @@ public class Juego extends InterfaceJuego
 	{
 	    this.entorno.colorFondo(Color.DARK_GRAY);
 
-	    // HUD SUPERIOR 
+	    // --- HUD SUPERIOR AJUSTADO (Sin superposiciones) ---
 	    this.entorno.dibujarRectangulo(400.0, 25.0, 800.0, 50.0, 0.0, Color.BLACK);
 	    Color colorCuadro = new Color(55, 70, 50);
 	    int segundosRestantes = this.tiempoRestante / 60; 
 
 	    // TIEMPO
-	    this.entorno.dibujarRectangulo(82.0, 25.0, 145.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoTiempo, 30.0, 25.0, 0.0, 0.3);
-	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Tiempo: " + segundosRestantes + "s", 50, 30);
+	    this.entorno.dibujarRectangulo(80.0, 25.0, 130.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoTiempo, 28.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 12, Color.WHITE);
+	    this.entorno.escribirTexto("Tiempo: " + segundosRestantes + "s", 45, 30);
 
 	    // VIDAS
-	    this.entorno.dibujarRectangulo(230.0, 25.0, 130.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarRectangulo(230.0, 25.0, 120.0, 36.0, 0.0, colorCuadro);
 	    this.entorno.dibujarImagen(this.iconoVidas, 185.0, 25.0, 0.0, 0.3);
-	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Vidas: " + this.repartidor.getVidas(), 205, 30);
+	    this.entorno.cambiarFont("Arial", 12, Color.WHITE);
+	    this.entorno.escribirTexto("Vidas: " + this.repartidor.vidas, 202, 30);
 
 	    // PEDIDOS ENTREGADOS
-	    this.entorno.dibujarRectangulo(395.0, 25.0, 175.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoCajaPedido, 325.0, 25.0, 0.0, 0.3);
-	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Entregados: " + this.repartidor.getPedidosEntregados(), 345, 30);
+	    this.entorno.dibujarRectangulo(390.0, 25.0, 180.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoCajaPedido, 315.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 12, Color.WHITE);
+	    this.entorno.escribirTexto("Entregados: " + this.pedidosEntregados, 335, 30);
 
 	    // ENEMIGOS ELIMINADOS
-	    this.entorno.dibujarRectangulo(570.0, 25.0, 155.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoEnemigos, 515.0, 25.0, 0.0, 0.3);
-	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Eliminados: " + this.enemigosEliminados, 535, 30);
+	    this.entorno.dibujarRectangulo(550.0, 25.0, 135.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoEnemigos, 495.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 12, Color.WHITE);
+	    this.entorno.escribirTexto("Eliminados: " + this.enemigosEliminados, 515, 30);
 
 	    // ESTADO DEL PEDIDO
 	    String textoEstado = (this.estadoPedido == 0) ? "Esperando" : "En camino";
-	    this.entorno.dibujarRectangulo(722.0, 25.0, 135.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoPedidoActual, 675.0, 25.0, 0.0, 0.3);
-	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Pedido: " + this.repartidor.getEstadoPedido(), 695, 30);
+	    this.entorno.dibujarRectangulo(700.0, 25.0, 145.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoPedidoActual, 640.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 11, Color.WHITE);
+	    this.entorno.escribirTexto("Pedido: " + textoEstado, 660, 30);
 
 	    // Dibuja la grilla
 	    for (int f = 0; f < 4; f++) {
@@ -195,7 +197,7 @@ public class Juego extends InterfaceJuego
 			if (!colisiona) this.repartidor.moverDerecha();
 		}
 		
-		// --- REQUERIMIENTO 7: Disparar con el botón izquierdo del mouse (Botón 1) ---
+		// --- REQUERIMIENTO 7: Disparar con el botón izquierdo del mouse (Botón 1) o Espacio ---
 		if (this.entorno.estaPresionada(this.entorno.TECLA_ESPACIO) || this.entorno.sePresionoBoton(1)) {
 			if (this.proyectil == null) {
 				this.proyectil = new Proyectil(this.repartidor.x, this.repartidor.y, this.repartidor.dirX, this.repartidor.dirY);
@@ -234,6 +236,32 @@ public class Juego extends InterfaceJuego
 	        }
 	    }
 		
+		// --- COLISIONES CON ENEMIGOS (Requerimiento 5)[cite: 5] ---
+		for (int i = 0; i < this.enemigos.length; i++) {
+			if (this.enemigos[i] != null) {
+				if (this.enemigos[i].colisionaCon(this.repartidor.x, this.repartidor.y, anchoRepartidor, altoRepartidor)) {
+					// Descuenta una vida
+					this.repartidor.vidas--;
+					System.out.println("¡Chocaste con un enemigo! Vidas restantes: " + this.repartidor.vidas);
+					
+					// Si llevaba pedido en estado "En camino", se pierde y vuelve a estado 0
+					if (this.estadoPedido == 1) {
+						this.estadoPedido = 0;
+						this.pedidosPerdidos++;
+						System.out.println("¡Pedido perdido por colisión con enemigo!");
+					}
+					
+					// Reubicar al repartidor al margen inferior izquierdo
+					this.repartidor.x = 70;
+					this.repartidor.y = 530;
+					
+					if (this.repartidor.vidas <= 0) {
+						System.out.println("¡JUEGO PERDIDO! Te has quedado sin vidas.");
+					}
+				}
+			}
+		}
+
 		this.repartidor.dibujar(this.entorno);
 		
 		// Temporizador de entrega
