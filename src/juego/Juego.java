@@ -12,7 +12,7 @@ public class Juego extends InterfaceJuego
 	private Cuadra[][] cuadras;
 	private Repartidor repartidor;
 	private Enemigo[] enemigos; 
-	private Proyectil proyectil; // Atributo para el proyectil único en vuelo
+	private Proyectil proyectil; 
 	
 	// Variables para el HUD visual  
 	private int enemigosEliminados = 0;
