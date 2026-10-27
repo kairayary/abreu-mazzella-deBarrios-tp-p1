@@ -21,6 +21,7 @@ public class Juego extends InterfaceJuego
     private Image iconoEnemigos;
     private Image iconoPedidoActual;
 	
+
 	// Variables para la Dinámica de Pedidos y Temporizador 
 	private int estadoPedido = 0; // 0 = Esperando (ir al negocio), 1 = En camino (ir a la casa)
 	private Negocio negocioDestinoActual = null;
@@ -53,9 +54,9 @@ public class Juego extends InterfaceJuego
 		this.cuadras = new Cuadra[4][4];
 		
 		int offsetX = 130; // Margen inicial horizontal
-		int offsetY = 120; // Margen inicial vertical 
+		int offsetY = 150; // Margen inicial vertical 
 		int espacioX = 170; // Separación entre columnas de cuadras
-		int espacioY = 110; // Separación entre filas de cuadras
+		int espacioY = 170; // Separación entre filas de cuadras
 
 		for (int f = 0; f < 4; f++) {
 			for (int c = 0; c < 4; c++) {
@@ -67,10 +68,10 @@ public class Juego extends InterfaceJuego
 		
 		// Inicialización de enemigos
 		this.enemigos = new Enemigo[4];
-		this.enemigos[0] = new Enemigo(100, 100, "HORIZONTAL");
-		this.enemigos[1] = new Enemigo(300, 200, "VERTICAL");
-		this.enemigos[2] = new Enemigo(500, 100, "HORIZONTAL");
-		this.enemigos[3] = new Enemigo(200, 400, "VERTICAL");
+		this.enemigos[0] = new Enemigo(215, 205, "HORIZONTAL"); // Calle libre horizontal
+		this.enemigos[1] = new Enemigo(385, 205, "VERTICAL");   // Calle libre vertical
+		this.enemigos[2] = new Enemigo(215, 315, "HORIZONTAL"); // Calle libre horizontal
+		this.enemigos[3] = new Enemigo(555, 315, "VERTICAL");   // Calle libre vertical
 
 		// Generar el primer pedido al iniciar el juego
 		generarNuevoPedido();
@@ -97,7 +98,6 @@ public class Juego extends InterfaceJuego
 
 	public void tick()
 	{
-		// Color de fondo del juego
 	    this.entorno.colorFondo(Color.DARK_GRAY);
 
 	    // DIBUJAR ENCABEZADO / HUD SUPERIOR 
@@ -107,35 +107,35 @@ public class Juego extends InterfaceJuego
 	    int segundosRestantes = this.tiempoRestante / 60; // Conversión aproximada de ticks a segundos
 
 	    // TIEMPO
-	    this.entorno.dibujarRectangulo(82.0, 25.0, 145.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoTiempo, 30.0, 25.0, 0.0, 0.3);
+	    this.entorno.dibujarRectangulo(78.0, 25.0, 135.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoTiempo, 33.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Tiempo: " + segundosRestantes + "s", 50, 30);
+	    this.entorno.escribirTexto("Tiempo: " + segundosRestantes + "s", 51, 30);
 
 	    // VIDAS
-	    this.entorno.dibujarRectangulo(230.0, 25.0, 130.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoVidas, 185.0, 25.0, 0.0, 0.3);
+	    this.entorno.dibujarRectangulo(213.0, 25.0, 105.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoVidas, 175.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Vidas: " + this.repartidor.vidas, 205, 30);
+	    this.entorno.escribirTexto("Vidas: " + this.repartidor.getVidas(), 195, 30);
 
 	    // PEDIDOS ENTREGADOS
-	    this.entorno.dibujarRectangulo(395.0, 25.0, 175.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoCajaPedido, 325.0, 25.0, 0.0, 0.3);
+	    this.entorno.dibujarRectangulo(355.0, 25.0, 150.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoCajaPedido, 298.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Entregados: " + this.pedidosEntregados, 345, 30);
+	    this.entorno.escribirTexto("Entregados: " + this.repartidor.getPedidosEntregados(), 318, 30);
 
 	    // ENEMIGOS ELIMINADOS
-	    this.entorno.dibujarRectangulo(570.0, 25.0, 155.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoEnemigos, 515.0, 25.0, 0.0, 0.3);
+	    this.entorno.dibujarRectangulo(520.0, 25.0, 150.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoEnemigos, 465.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Eliminados: " + this.enemigosEliminados, 535, 30);
-
+	    this.entorno.escribirTexto("Eliminados: " + this.enemigosEliminados, 485, 30);
+	    
 	    // ESTADO DEL PEDIDO
 	    String textoEstado = (this.estadoPedido == 0) ? "Esperando" : "En camino";
-	    this.entorno.dibujarRectangulo(722.0, 25.0, 135.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoPedidoActual, 675.0, 25.0, 0.0, 0.3);
+	    this.entorno.dibujarRectangulo(700.0, 25.0, 180.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoPedidoActual, 628.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Pedido: " + textoEstado, 695, 30);
+	    this.entorno.escribirTexto("Pedido: " + this.repartidor.getEstadoPedido(), 665, 30);
 
 		// Dibuja la grilla de la ciudad (Cuadras, Casas y Negocios)
 	    for (int f = 0; f < 4; f++) {
@@ -148,6 +148,15 @@ public class Juego extends InterfaceJuego
 	    if (this.estadoPedido == 0 && this.negocioDestinoActual != null) {
 	        this.entorno.dibujarImagen(this.iconoFlechaRoja, this.negocioDestinoActual.x, this.negocioDestinoActual.y - 35, 0, 0.25);
 	    } else if (this.estadoPedido == 1 && this.casaDestinoActual != null) {
+	    	
+	    }
+	 //  DIBUJAR FLECHA INDICADORA SEGÚN EL ESTADO DEL PEDIDO 
+	    if (this.estadoPedido == 0 && this.negocioDestinoActual != null) {
+	        // Estado 0 (Esperando): Flecha roja apuntando al negocio (escala 0.25 para que se vea bien)
+	        this.entorno.dibujarImagen(this.iconoFlechaRoja, this.negocioDestinoActual.x, this.negocioDestinoActual.y - 35, 0, 0.25);
+	    } else if (this.estadoPedido == 1 && this.casaDestinoActual != null) {
+	        // Estado 1 (En camino): Flecha verde apuntando a la casa de destino
+
 	        this.entorno.dibujarImagen(this.iconoFlechaVerde, this.casaDestinoActual.x, this.casaDestinoActual.y - 35, 0, 0.25);
 	    }
 
@@ -155,7 +164,9 @@ public class Juego extends InterfaceJuego
 		int anchoRepartidor = 30;
 		int altoRepartidor = 40;
 
+
 		// --- Movimiento arriba (W) ---
+
 		if (this.entorno.estaPresionada('w') || this.entorno.estaPresionada('W')) {
 			int proximoY = this.repartidor.y - 2;
 			boolean colisiona = false;
@@ -165,6 +176,7 @@ public class Juego extends InterfaceJuego
 				colisiona = true;
 			}
 			
+			// Colisión con las cuadras
 			for (int f = 0; f < 4; f++) {
 				for (int c = 0; c < 4; c++) {
 					if (this.cuadras[f][c].hayColision(this.repartidor.x, proximoY, anchoRepartidor, altoRepartidor)) {
@@ -177,6 +189,23 @@ public class Juego extends InterfaceJuego
 				this.repartidor.moverArriba();
 			}
 		}
+
+				if (this.entorno.estaPresionada('w') || this.entorno.estaPresionada('W')) {
+					int proximoY = this.repartidor.y - 2;
+					boolean colisiona = false;
+					
+					for (int f = 0; f < 4; f++) {
+						for (int c = 0; c < 4; c++) {
+							if (this.cuadras[f][c].hayColision(this.repartidor.x, proximoY, anchoRepartidor, altoRepartidor)) {
+								colisiona = true;
+							}
+						}
+					}
+					
+					if (!colisiona) {
+						this.repartidor.moverArriba();
+					}
+				}
 				
 		// --- Movimiento abajo (S) ---
 		if (this.entorno.estaPresionada('s') || this.entorno.estaPresionada('S')) {
@@ -197,11 +226,12 @@ public class Juego extends InterfaceJuego
 			}
 			
 			if (!colisiona) {
-				this.repartidor.moverAbajo();
+				this.repartidor.moverAbajo(this.entorno.alto());
 			}
 		}
 
 		// --- Movimiento izquierda (A) ---
+		
 		if (this.entorno.estaPresionada('a') || this.entorno.estaPresionada('A')) {
 			int proximoX = this.repartidor.x - 2;
 			boolean colisiona = false;
@@ -243,17 +273,17 @@ public class Juego extends InterfaceJuego
 			}
 			
 			if (!colisiona) {
-				this.repartidor.moverDerecha();
+				this.repartidor.moverDerecha(this.entorno.ancho());
 			}
 		}
 		
 		// --- Movimiento y dibujo de los enemigos ---
 		for (int i = 0; i < this.enemigos.length; i++) {
-			if (this.enemigos[i] != null) {
-				this.enemigos[i].mover();
-				this.enemigos[i].dibujar(this.entorno);
-			}
-		} 
+	        if (this.enemigos[i] != null) { 
+	            this.enemigos[i].mover(this.entorno.ancho(), this.entorno.alto(), this.cuadras);
+	            this.enemigos[i].dibujar(this.entorno);
+	        }
+	    }
 		
 		// --- Dibujamos al repartidor ---
 		this.repartidor.dibujar(this.entorno);

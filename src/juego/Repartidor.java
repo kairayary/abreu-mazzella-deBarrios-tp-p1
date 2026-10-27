@@ -47,20 +47,28 @@ public class Repartidor {
         entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.25);
     }
     
-    // Métodos de movimiento
-    public void moverArriba() {
-        this.y -= 2;
+    // Métodos de movimiento con limite de pantalla y hud
+    public void moverArriba() { 
+        if (this.y - (this.alto / 2) > 50) { // Respeta el HUD superior (50 píxeles)
+            this.y -= 2; 
+        }
     }
-
-    public void moverAbajo() {
-        this.y += 2;
+    
+    public void moverAbajo(int altoEntorno) { 
+        if (this.y + (this.alto / 2) < altoEntorno) { // Respeta el borde inferior
+            this.y += 2; 
+        }
     }
-
-    public void moverIzquierda() {
-        this.x -= 2;
+    
+    public void moverIzquierda() { 
+        if (this.x - (this.ancho / 2) > 0) { // Respeta el borde izquierdo
+            this.x -= 2; 
+        }
     }
-
-    public void moverDerecha() {
-        this.x += 2;
+    
+    public void moverDerecha(int anchoEntorno) { 
+        if (this.x + (this.ancho / 2) < anchoEntorno) { // Respeta el borde derecho
+            this.x += 2; 
+        }
     }
 }
