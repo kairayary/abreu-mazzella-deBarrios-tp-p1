@@ -32,6 +32,7 @@ public class Juego extends InterfaceJuego
 	private int pedidosPerdidos = 0;
 	private Image iconoFlechaRoja;
 	private Image iconoFlechaVerde;
+	private boolean juegoTerminado = false;
 
 	Juego()
 	{
@@ -39,7 +40,7 @@ public class Juego extends InterfaceJuego
 		this.entorno = new Entorno(this, "Delivery Rush - UNGS", 800, 600);
 		
 		// Inicializar el repartidor
-		this.repartidor = new Repartidor(200, 300); 
+		this.repartidor = new Repartidor(60, 540); 
 		
 		// Cargar iconos para el HUD y las flechas indicadoras
 		this.iconoTiempo = Herramientas.cargarImagen("img/tiempo.png");
@@ -50,7 +51,7 @@ public class Juego extends InterfaceJuego
 	    this.iconoFlechaRoja = Herramientas.cargarImagen("img/flechaRoja.png");
 	    this.iconoFlechaVerde = Herramientas.cargarImagen("img/flechaVerde.png");
 		
-		// Inicializacion de la grilla de 4x4 cuadras
+		// INICIALIZAR GRILLA 4X4 CUADRAS
 		this.cuadras = new Cuadra[4][4];
 		
 		int offsetX = 130; // Margen inicial horizontal
@@ -66,7 +67,7 @@ public class Juego extends InterfaceJuego
 			}
 		}
 		
-		// Inicialización de enemigos
+		// INICIALIZAR ENEMIGOS
 		this.enemigos = new Enemigo[4];
 		this.enemigos[0] = new Enemigo(215, 205, "HORIZONTAL"); // Calle libre horizontal
 		this.enemigos[1] = new Enemigo(385, 205, "VERTICAL");   // Calle libre vertical
@@ -99,6 +100,28 @@ public class Juego extends InterfaceJuego
 	public void tick()
 	{
 	    this.entorno.colorFondo(Color.DARK_GRAY);
+	    
+	    // si el juego terminó
+	    if (this.juegoTerminado) {
+	        // Fondo negro cubriendo toda la pantalla
+	        this.entorno.dibujarRectangulo(400.0, 300.0, 800.0, 600.0, 0.0, Color.BLACK);
+	        
+	        // Textos del Game Over
+	        this.entorno.cambiarFont("Arial", 40, Color.RED);
+	        this.entorno.escribirTexto("¡GAME OVER!", 270, 250);
+	        
+	        this.entorno.cambiarFont("Arial", 20, Color.WHITE);
+	        this.entorno.escribirTexto("Te quedaste sin vidas", 310, 310);
+	        this.entorno.escribirTexto("Pedidos entregados: " + this.repartidor.getPedidosEntregados(), 280, 360);
+	        
+	        return; // Detiene el tick para que el juego se congele aquí
+	    }
+
+	    // --- VERIFICAR VIDAS ---
+	    if (this.repartidor.getVidas() <= 0) {
+	        this.juegoTerminado = true;
+	    }
+	    
 
 	    // DIBUJAR ENCABEZADO / HUD SUPERIOR 
 	    this.entorno.dibujarRectangulo(400.0, 25.0, 800.0, 50.0, 0.0, Color.BLACK);
@@ -277,14 +300,23 @@ public class Juego extends InterfaceJuego
 			}
 		}
 		
-		// --- Movimiento y dibujo de los enemigos ---
-		for (int i = 0; i < this.enemigos.length; i++) {
-	        if (this.enemigos[i] != null) { 
-	            this.enemigos[i].mover(this.entorno.ancho(), this.entorno.alto(), this.cuadras);
-	            this.enemigos[i].dibujar(this.entorno);
-	        }
-	    }
-		
+		// Movimiento y dibujo de los enemigos
+				for (int i = 0; i < this.enemigos.length; i++) {
+					if (this.enemigos[i] != null) { 
+						this.enemigos[i].mover(this.entorno.ancho(), this.entorno.alto(), this.cuadras);
+						
+						// Si el enemigo choca al repartidor
+						if (this.enemigos[i].colisionaCon(this.repartidor.x, this.repartidor.y, 30, 40)) {
+							this.repartidor.vidas--; // Resta una vida
+							// Opcional: teletransportar al repartidor a un punto seguro para que no reste vidas de golpe
+							this.repartidor.x = 200;
+							this.repartidor.y = 300;
+						}
+						
+						this.enemigos[i].dibujar(this.entorno);
+					}
+				}
+				
 		// --- Dibujamos al repartidor ---
 		this.repartidor.dibujar(this.entorno);
 		

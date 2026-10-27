@@ -20,10 +20,17 @@ public class Repartidor {
         this.y = yInicio;
         this.ancho = 30;
         this.alto = 40;
-        this.vidas = 3; 
+        this.vidas = 5; 
         this.pedidosEntregados = 0;
         this.estadoPedido = "Ninguno";   // Estado inicial del pedido
         this.imagen = Herramientas.cargarImagen("img/deliveryBoy.png");
+    }
+    
+    //que hace el repartidor cuando pierde una vida: 
+    public void perderVida() {
+        this.vidas--; // Resta una vida
+        this.x = 60; // Lo reubica a la posición segura X
+        this.y = 540; // Lo reubica a la posición segura Y
     }
     
     // Métodos Getters y Setters requeridos para el HUD y la lógica
