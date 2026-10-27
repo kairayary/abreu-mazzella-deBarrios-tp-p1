@@ -62,10 +62,10 @@ public class Juego extends InterfaceJuego
 		}
 		
 		this.enemigos = new Enemigo[4];
-		this.enemigos[0] = new Enemigo(100, 100, "HORIZONTAL");
-		this.enemigos[1] = new Enemigo(300, 200, "VERTICAL");
-		this.enemigos[2] = new Enemigo(500, 100, "HORIZONTAL");
-		this.enemigos[3] = new Enemigo(200, 400, "VERTICAL");
+		this.enemigos[0] = new Enemigo(215, 205, "HORIZONTAL"); 
+		this.enemigos[1] = new Enemigo(385, 205, "VERTICAL");   
+		this.enemigos[2] = new Enemigo(215, 315, "HORIZONTAL"); 
+		this.enemigos[3] = new Enemigo(555, 315, "VERTICAL");   
 
 		generarNuevoPedido();
 		this.entorno.iniciar();
@@ -95,31 +95,36 @@ public class Juego extends InterfaceJuego
 	    Color colorCuadro = new Color(55, 70, 50);
 	    int segundosRestantes = this.tiempoRestante / 60; 
 
+	    // TIEMPO
 	    this.entorno.dibujarRectangulo(82.0, 25.0, 145.0, 36.0, 0.0, colorCuadro);
 	    this.entorno.dibujarImagen(this.iconoTiempo, 30.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
 	    this.entorno.escribirTexto("Tiempo: " + segundosRestantes + "s", 50, 30);
 
+	    // VIDAS
 	    this.entorno.dibujarRectangulo(230.0, 25.0, 130.0, 36.0, 0.0, colorCuadro);
 	    this.entorno.dibujarImagen(this.iconoVidas, 185.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Vidas: " + this.repartidor.vidas, 205, 30);
+	    this.entorno.escribirTexto("Vidas: " + this.repartidor.getVidas(), 205, 30);
 
+	    // PEDIDOS ENTREGADOS
 	    this.entorno.dibujarRectangulo(395.0, 25.0, 175.0, 36.0, 0.0, colorCuadro);
 	    this.entorno.dibujarImagen(this.iconoCajaPedido, 325.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Entregados: " + this.pedidosEntregados, 345, 30);
+	    this.entorno.escribirTexto("Entregados: " + this.repartidor.getPedidosEntregados(), 345, 30);
 
+	    // ENEMIGOS ELIMINADOS
 	    this.entorno.dibujarRectangulo(570.0, 25.0, 155.0, 36.0, 0.0, colorCuadro);
 	    this.entorno.dibujarImagen(this.iconoEnemigos, 515.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
 	    this.entorno.escribirTexto("Eliminados: " + this.enemigosEliminados, 535, 30);
 
+	    // ESTADO DEL PEDIDO
 	    String textoEstado = (this.estadoPedido == 0) ? "Esperando" : "En camino";
 	    this.entorno.dibujarRectangulo(722.0, 25.0, 135.0, 36.0, 0.0, colorCuadro);
 	    this.entorno.dibujarImagen(this.iconoPedidoActual, 675.0, 25.0, 0.0, 0.3);
 	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
-	    this.entorno.escribirTexto("Pedido: " + textoEstado, 695, 30);
+	    this.entorno.escribirTexto("Pedido: " + this.repartidor.getEstadoPedido(), 695, 30);
 
 	    // Dibuja la grilla
 	    for (int f = 0; f < 4; f++) {
@@ -191,8 +196,10 @@ public class Juego extends InterfaceJuego
 		}
 		
 		// --- REQUERIMIENTO 7: Disparar con el botón izquierdo del mouse (Botón 1) ---
-		if (this.entorno.sePresionoBoton(1) && this.proyectil == null) {
-			this.proyectil = new Proyectil(this.repartidor.x, this.repartidor.y, this.repartidor.dirX, this.repartidor.dirY);
+		if (this.entorno.estaPresionada(this.entorno.TECLA_ESPACIO) || this.entorno.sePresionoBoton(1)) {
+			if (this.proyectil == null) {
+				this.proyectil = new Proyectil(this.repartidor.x, this.repartidor.y, this.repartidor.dirX, this.repartidor.dirY);
+			}
 		}
 
 		// --- Actualizar y verificar colisiones del Proyectil ---
@@ -221,11 +228,11 @@ public class Juego extends InterfaceJuego
 
 		// Movimiento y dibujo de enemigos
 		for (int i = 0; i < this.enemigos.length; i++) {
-			if (this.enemigos[i] != null) {
-				this.enemigos[i].mover();
-				this.enemigos[i].dibujar(this.entorno);
-			}
-		} 
+	        if (this.enemigos[i] != null) { 
+	            this.enemigos[i].mover(this.entorno.ancho(), this.entorno.alto(), this.cuadras);
+	            this.enemigos[i].dibujar(this.entorno);
+	        }
+	    }
 		
 		this.repartidor.dibujar(this.entorno);
 		

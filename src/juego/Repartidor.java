@@ -14,7 +14,7 @@ public class Repartidor {
     String estadoPedido;
     Image imagen;
     
-    // Variables para registrar la última dirección de movimiento
+    // Variables para registrar la última dirección de movimiento (esencial para el Proyectil)
     int dirX = 1; 
     int dirY = 0;
 
@@ -49,7 +49,7 @@ public class Repartidor {
         entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.25);
     }
     
-    // Métodos de movimiento actualizando la dirección del disparo
+    // Métodos de movimiento actualizando la posición y la dirección del disparo
     public void moverArriba() {
         this.dirX = 0;
         this.dirY = -1;
