@@ -29,6 +29,12 @@ public class Repartidor {
         this.imagen = Herramientas.cargarImagen("img/deliveryBoy.png");
     }
     
+    public void perderVida() {
+        this.vidas--; // Resta una vida
+        this.x = 60; // Lo reubica a la posición segura X
+        this.y = 540; // Lo reubica a la posición segura Y
+    }
+    
     public int getVidas() {
     	return this.vidas;
     }

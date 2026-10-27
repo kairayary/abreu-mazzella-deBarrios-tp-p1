@@ -9,6 +9,7 @@ public class Cuadra {
     int xBase;
     int yBase;
 
+ // Constructor que inicializa las casas y el negocio bien juntos (formando un bloque compacto 2x2)
     public Cuadra(int xBase, int yBase) {
         this.xBase = xBase;
         this.yBase = yBase;
@@ -22,28 +23,30 @@ public class Cuadra {
     }
 
     public boolean hayColision(int xRepartidor, int yRepartidor, int anchoRepartidor, int altoRepartidor) {
-        // Reducimos las dimensiones de la manzana para ensanchar las calles y permitir el paso libre
-        int anchoManzana = 80;
-        int altoManzana = 50;
+        // Reducimos las dimensiones de la manzana para ensanchar las calles y permitir el paso libre   (?))
+    	//int anchoManzana = 80;
+    	//int altoManzana = 50;
         
-        int left1 = xRepartidor - anchoRepartidor / 2;
-        int right1 = xRepartidor + anchoRepartidor / 2;
-        int top1 = yRepartidor - altoRepartidor / 2;
-        int bottom1 = yRepartidor + altoRepartidor / 2;
+    	//int left1 = xRepartidor - anchoRepartidor / 2;
+    	// int right1 = xRepartidor + anchoRepartidor / 2;
+    	//int top1 = yRepartidor - altoRepartidor / 2;
+    	//int bottom1 = yRepartidor + altoRepartidor / 2;
 
-        int left2 = this.xBase - anchoManzana / 2;
-        int right2 = this.xBase + anchoManzana / 2;
-        int top2 = this.yBase - altoManzana / 2;
-        int bottom2 = this.yBase + altoManzana / 2;
+    	//int left2 = this.xBase - anchoManzana / 2;
+    	//int right2 = this.xBase + anchoManzana / 2;
+    	//int top2 = this.yBase - altoManzana / 2;
+    	//int bottom2 = this.yBase + altoManzana / 2;
 
-        if (left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2) {
-            return true;
-        }
+    	//if (left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2) {
+    	//return true;
+            //}   //
         
+        // Verificar colisión con el negocio
         if (this.negocio.colisionaCon(xRepartidor, yRepartidor, anchoRepartidor, altoRepartidor)) {
             return true;
         }
         
+     // Verificar colisión con cada una de las casas
         for (int i = 0; i < this.casas.length; i++) {
             if (this.casas[i].colisionaCon(xRepartidor, yRepartidor, anchoRepartidor, altoRepartidor)) {
                 return true;
@@ -54,10 +57,11 @@ public class Cuadra {
     }
 
     public void dibujar(Entorno entorno) {
-        entorno.dibujarRectangulo((double)this.xBase, (double)this.yBase, 80.0, 50.0, 0.0, Color.GRAY);
-
+    	//DIBUJO EL RECTANGULO
+        entorno.dibujarRectangulo((double)this.xBase, (double)this.yBase, 90.0, 65.0, 0.0, Color.GRAY);
+        //DIBUJO EL NEEGOCIO
         this.negocio.dibujar(entorno);
-        
+        //DIBUJO LAS CASAS
         for (int i = 0; i < this.casas.length; i++) {
             this.casas[i].dibujar(entorno);
         }

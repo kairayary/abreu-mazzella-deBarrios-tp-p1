@@ -38,7 +38,7 @@ public class Juego extends InterfaceJuego
 		this.entorno = new Entorno(this, "Delivery Rush - UNGS", 800, 600);
 		
 		// Posicionar al repartidor en el margen inferior izquierdo (Requerimiento 1)[cite: 4]
-		this.repartidor = new Repartidor(70, 530); 
+		this.repartidor = new Repartidor(60, 540); 
 		this.proyectil = null;
 		
 		this.iconoTiempo = Herramientas.cargarImagen("img/tiempo.png");
@@ -92,42 +92,39 @@ public class Juego extends InterfaceJuego
 	{
 	    this.entorno.colorFondo(Color.DARK_GRAY);
 
-	    // --- HUD SUPERIOR AJUSTADO (Sin superposiciones) ---
+	    // HUD
 	    this.entorno.dibujarRectangulo(400.0, 25.0, 800.0, 50.0, 0.0, Color.BLACK);
 	    Color colorCuadro = new Color(55, 70, 50);
-	    int segundosRestantes = this.tiempoRestante / 60; 
 
 	    // TIEMPO
-	    this.entorno.dibujarRectangulo(80.0, 25.0, 130.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoTiempo, 28.0, 25.0, 0.0, 0.3);
-	    this.entorno.cambiarFont("Arial", 12, Color.WHITE);
-	    this.entorno.escribirTexto("Tiempo: " + segundosRestantes + "s", 45, 30);
+	    this.entorno.dibujarRectangulo(75.0, 25.0, 135.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoTiempo, 33.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+	    this.entorno.escribirTexto("Tiempo: " + tiempoRestante + "s", 51, 30);
 
 	    // VIDAS
-	    this.entorno.dibujarRectangulo(230.0, 25.0, 120.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoVidas, 185.0, 25.0, 0.0, 0.3);
-	    this.entorno.cambiarFont("Arial", 12, Color.WHITE);
-	    this.entorno.escribirTexto("Vidas: " + this.repartidor.vidas, 202, 30);
+	    this.entorno.dibujarRectangulo(213.0, 25.0, 105.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoVidas, 175.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+	    this.entorno.escribirTexto("Vidas: " + this.repartidor.getVidas(), 195, 30);
 
 	    // PEDIDOS ENTREGADOS
-	    this.entorno.dibujarRectangulo(390.0, 25.0, 180.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoCajaPedido, 315.0, 25.0, 0.0, 0.3);
-	    this.entorno.cambiarFont("Arial", 12, Color.WHITE);
-	    this.entorno.escribirTexto("Entregados: " + this.pedidosEntregados, 335, 30);
+	    this.entorno.dibujarRectangulo(355.0, 25.0, 150.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoCajaPedido, 298.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+	    this.entorno.escribirTexto("Entregados: " + this.repartidor.getPedidosEntregados(), 318, 30);
 
 	    // ENEMIGOS ELIMINADOS
-	    this.entorno.dibujarRectangulo(550.0, 25.0, 135.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoEnemigos, 495.0, 25.0, 0.0, 0.3);
-	    this.entorno.cambiarFont("Arial", 12, Color.WHITE);
-	    this.entorno.escribirTexto("Eliminados: " + this.enemigosEliminados, 515, 30);
-
+	    this.entorno.dibujarRectangulo(520.0, 25.0, 150.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoEnemigos, 465.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+	    this.entorno.escribirTexto("Eliminados: " + this.enemigosEliminados, 485, 30);
+	    
 	    // ESTADO DEL PEDIDO
-	    String textoEstado = (this.estadoPedido == 0) ? "Esperando" : "En camino";
-	    this.entorno.dibujarRectangulo(700.0, 25.0, 145.0, 36.0, 0.0, colorCuadro);
-	    this.entorno.dibujarImagen(this.iconoPedidoActual, 640.0, 25.0, 0.0, 0.3);
-	    this.entorno.cambiarFont("Arial", 11, Color.WHITE);
-	    this.entorno.escribirTexto("Pedido: " + textoEstado, 660, 30);
-
+	    this.entorno.dibujarRectangulo(700.0, 25.0, 180.0, 36.0, 0.0, colorCuadro);
+	    this.entorno.dibujarImagen(this.iconoPedidoActual, 628.0, 25.0, 0.0, 0.3);
+	    this.entorno.cambiarFont("Arial", 13, Color.WHITE);
+	    this.entorno.escribirTexto("Pedido: " + this.repartidor.getEstadoPedido(), 648, 30);
 	    // Dibuja la grilla
 	    for (int f = 0; f < 4; f++) {
 	        for (int c = 0; c < 4; c++) {
