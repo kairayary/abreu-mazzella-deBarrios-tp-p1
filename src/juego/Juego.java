@@ -54,9 +54,9 @@ public class Juego extends InterfaceJuego
 		this.cuadras = new Cuadra[4][4];
 		
 		int offsetX = 130; // Margen inicial horizontal
-		int offsetY = 120; // Margen inicial vertical 
+		int offsetY = 150; // Margen inicial vertical 
 		int espacioX = 170; // Separación entre columnas de cuadras
-		int espacioY = 110; // Separación entre filas de cuadras
+		int espacioY = 170; // Separación entre filas de cuadras
 
 		for (int f = 0; f < 4; f++) {
 			for (int c = 0; c < 4; c++) {
